@@ -2,21 +2,23 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("Movement Settings")] [SerializeField]
-    public float speed = 4f;
+    [Header("Movement Settings")] 
+    [SerializeField] private float speed = 4f;
+    [SerializeField] private float sprintMultiplier = 1.5f;
 
-    [SerializeField] public float sprintMultiplier = 1.5f;
+    [Header("Jump Settings")] 
+    [SerializeField] private float jumpForce = 3f;
+    [SerializeField] private float airControlFactor = 0.7f;
 
-    [Header("JumpSettings")] [SerializeField]
-    public float jumpForce = 3f;
+    [Header("Ground Check")] 
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundRadius = 0.2f;
+    [SerializeField] private LayerMask layerGrounds;
 
-    [SerializeField] public float airControlFactor = 0.7f;
-
-    [Header("Ground Check")] [SerializeField]
-    public Transform groundCheck;
-
-    [SerializeField] public float groundRadius = 0.2f;
-    [SerializeField] public LayerMask layerGrounds;
+    [Header("Dash Settings")] 
+    [SerializeField] private float dashForce = 10f;
+    [SerializeField] private float dashCooldown = 1f;
+    [SerializeField] private float dashDuration = 0.5f;
 
     private const int MaxJumps = 2;
 
@@ -26,6 +28,9 @@ public class Player : MonoBehaviour
 
     private bool _isSprinting;
     private bool _isGrounded;
+    private bool _canDash = true;
+    private bool _isDashing = false;
+
     private float _movementX;
     private float _activeMoveSpeed;
     private int _jumpCount;
@@ -34,8 +39,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _input = new Controls();
-        _rigidbody = gameObject.GetComponent<Rigidbody2D>();
-        _sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _sprite = GetComponentInChildren<SpriteRenderer>();
 
         SetupInputCallbacks();
     }
@@ -47,17 +52,18 @@ public class Player : MonoBehaviour
         _input.Player.Jump.performed += _ => Jump();
         _input.Player.Sprint.performed += _ => _isSprinting = true;
         _input.Player.Sprint.canceled += _ => _isSprinting = false;
-    }
-
-    private void Update()
-    {
-        _rigidbody.linearVelocity = new Vector2(_activeMoveSpeed, _rigidbody.linearVelocity.y);
+        _input.Player.Dash.performed += _ => Dash();
     }
 
     private void FixedUpdate()
     {
         UpdateGroundedStatus();
         UpdateMovementSpeed();
+
+        if (!_isDashing)
+        {
+            _rigidbody.linearVelocity = new Vector2(_activeMoveSpeed, _rigidbody.linearVelocity.y);
+        }
     }
 
     private void UpdateGroundedStatus()
@@ -81,6 +87,7 @@ public class Player : MonoBehaviour
             _activeMoveSpeed = _movementX * _jumpStartSpeed * airControlFactor;
         }
     }
+
     private void Move(float axis)
     {
         _movementX = axis;
@@ -103,6 +110,32 @@ public class Player : MonoBehaviour
     private float GetCurrentSpeed()
     {
         return speed * (_isSprinting ? sprintMultiplier : 1f);
+    }
+
+    private void Dash()
+    {
+        if (_canDash)
+        {
+            var dashDirection = new Vector2(_sprite.flipX ? -1 : 1, 0);
+            _rigidbody.linearVelocity = Vector2.zero;
+            _rigidbody.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
+
+            _canDash = false;
+            _isDashing = true;
+
+            Invoke(nameof(StopDash), dashDuration);
+            Invoke(nameof(ResetDash), dashCooldown);
+        }
+    }
+
+    private void StopDash()
+    {
+        _isDashing = false;
+    }
+
+    private void ResetDash()
+    {
+        _canDash = true;
     }
 
     private void OnEnable() => _input.Enable();
