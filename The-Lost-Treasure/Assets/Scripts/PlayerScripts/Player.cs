@@ -41,11 +41,13 @@ public class Player : MonoBehaviour
     private float _activeMoveSpeed;
     private int _jumpCount;
     private float _jumpStartSpeed;
+    private float _defaultGravityScale;
 
     private void Awake()
     {
         _input = new Controls();
         _rigidbody = GetComponent<Rigidbody2D>();
+        _defaultGravityScale = _rigidbody.gravityScale; 
         _sprite = GetComponentInChildren<SpriteRenderer>();
 
         SetupInputCallbacks();
@@ -137,6 +139,7 @@ public class Player : MonoBehaviour
         {
             var dashDirection = new Vector2(_sprite.flipX ? -1 : 1, 0);
             _rigidbody.linearVelocity = Vector2.zero;
+            _rigidbody.gravityScale = 0f;
             _rigidbody.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
 
             _canDash = false;
@@ -150,6 +153,7 @@ public class Player : MonoBehaviour
     private void StopDash()
     {
         _isDashing = false;
+        _rigidbody.gravityScale = _defaultGravityScale;
     }
 
     private void ResetDash()
