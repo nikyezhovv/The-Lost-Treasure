@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
     [Header("Movement Settings")] 
     [SerializeField] private float speed = 4f;
     [SerializeField] private float sprintMultiplier = 1.5f;
+    [SerializeField] private float crouchMultiplier = 0.5f; 
 
     [Header("Jump Settings")] 
     [SerializeField] private float jumpForce = 3f;
@@ -19,6 +20,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float dashForce = 10f;
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private float dashDuration = 0.5f;
+    
+    [Header("Colliders")]
+    [SerializeField] private Collider2D standingCollider;
+    [SerializeField] private Collider2D crouchingCollider;
 
     private const int MaxJumps = 2;
 
@@ -29,7 +34,8 @@ public class Player : MonoBehaviour
     private bool _isSprinting;
     private bool _isGrounded;
     private bool _canDash = true;
-    private bool _isDashing = false;
+    private bool _isDashing;
+    private bool _isCrouching;
 
     private float _movementX;
     private float _activeMoveSpeed;
@@ -53,6 +59,8 @@ public class Player : MonoBehaviour
         _input.Player.Sprint.performed += _ => _isSprinting = true;
         _input.Player.Sprint.canceled += _ => _isSprinting = false;
         _input.Player.Dash.performed += _ => Dash();
+        _input.Player.Crouch.performed += _ => StartCrouch();
+        _input.Player.Crouch.canceled += _ => StopCrouch();
     }
 
     private void FixedUpdate()
@@ -109,12 +117,23 @@ public class Player : MonoBehaviour
 
     private float GetCurrentSpeed()
     {
-        return speed * (_isSprinting ? sprintMultiplier : 1f);
+        float baseSpeed = speed;
+
+        if (_isCrouching)
+        {
+            baseSpeed *= crouchMultiplier;
+        }
+        else if (_isSprinting)
+        {
+            baseSpeed *= sprintMultiplier;
+        }
+
+        return baseSpeed;
     }
 
     private void Dash()
     {
-        if (_canDash)
+        if (_canDash && !_isCrouching)
         {
             var dashDirection = new Vector2(_sprite.flipX ? -1 : 1, 0);
             _rigidbody.linearVelocity = Vector2.zero;
@@ -136,6 +155,22 @@ public class Player : MonoBehaviour
     private void ResetDash()
     {
         _canDash = true;
+    }
+
+    private void StartCrouch()
+    {
+        _isCrouching = true;
+        standingCollider.enabled = false;
+        crouchingCollider.enabled = true;
+        transform.localScale = new Vector3(1f, 0.5f, 1f);
+    }
+
+    private void StopCrouch()
+    {
+        _isCrouching = false;
+        crouchingCollider.enabled = false;
+        standingCollider.enabled = true;
+        transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
     private void OnEnable() => _input.Enable();
