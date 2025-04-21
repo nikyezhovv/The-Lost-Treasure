@@ -471,6 +471,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2107481175}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &292956168
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 292956169}
+  m_Layer: 19
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &292956169
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292956168}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1271379567}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &321633931
 GameObject:
   m_ObjectHideFlags: 0
@@ -2717,9 +2748,11 @@ GameObject:
   - component: {fileID: 1271379570}
   - component: {fileID: 1271379572}
   - component: {fileID: 1271379571}
-  m_Layer: 0
+  - component: {fileID: 1271379574}
+  - component: {fileID: 1271379573}
+  m_Layer: 19
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2766,6 +2799,7 @@ Transform:
   m_Children:
   - {fileID: 1566657591}
   - {fileID: 1661742815}
+  - {fileID: 292956169}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1271379568
@@ -2900,6 +2934,38 @@ CapsuleCollider2D:
   m_Offset: {x: 0.018710136, y: 0.8088455}
   m_Size: {x: 1.1764364, y: 1.6735582}
   m_Direction: 0
+--- !u!114 &1271379573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271379564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a10030d637d35154288369b7186af0a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRange: 2
+  attackDamage: 20
+  attackCooldown: 0.5
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 8388608
+  attackPoint: {fileID: 292956169}
+--- !u!114 &1271379574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271379564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a654eaffe9f8fdf42bbf30b5147f56c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
 --- !u!1 &1338831454
 GameObject:
   m_ObjectHideFlags: 0
@@ -4833,7 +4899,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1566657591}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: groundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
@@ -4865,7 +4931,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1661742815}
   - component: {fileID: 1661742816}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: player_idle_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
