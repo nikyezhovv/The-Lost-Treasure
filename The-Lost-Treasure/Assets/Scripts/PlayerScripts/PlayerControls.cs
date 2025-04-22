@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerControls : MonoBehaviour
 {
     [Header("Movement Settings")] 
     [SerializeField] private float speed = 4f;
@@ -42,6 +42,11 @@ public class Player : MonoBehaviour
     private int _jumpCount;
     private float _jumpStartSpeed;
     private float _defaultGravityScale;
+    
+    public SpriteRenderer PlayerSprite => _sprite;
+    public bool IsFacingLeft => _sprite.flipX;
+    public bool IsDashing => _isDashing;
+    public bool IsCrouching => _isCrouching;
 
     private void Awake()
     {
