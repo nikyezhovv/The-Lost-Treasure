@@ -41,17 +41,23 @@ TagManager:
   - name: fon
     uniqueID: 2621077973
     locked: 0
+  - name: Props
+    uniqueID: 2425651459
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Layer 1
-    uniqueID: 2425651459
+  - name: Enemies
+    uniqueID: 4189426099
     locked: 0
-  - name: Layer 2
+  - name: Player
+    uniqueID: 1951852147
+    locked: 0
+  - name: Ground
     uniqueID: 4250941897
     locked: 0
-  - name: Layer 3
-    uniqueID: 4189426099
+  - name: front
+    uniqueID: 3525660159
     locked: 0
   m_RenderingLayers:
   - Default
