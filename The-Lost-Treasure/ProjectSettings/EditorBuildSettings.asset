@@ -6,14 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/menuScene.unity
-    guid: 0ba7af2f0560ce144b3735a559541a3b
+    path: Assets/Cainos/Pixel Art Top Down - Basic/Scene/SC Demo.unity
+    guid: 86e89bd9e4a9c5245a015cf17e3c0aae
   - enabled: 1
     path: Assets/Scenes/gameScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
-    path: Assets/Scenes/settingsScene.unity
-    guid: fc7bcf9ec15c8fa49a4ac48d219500dd
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: d4f3114671d5c6d4f8477471db92184b,
       type: 3}
