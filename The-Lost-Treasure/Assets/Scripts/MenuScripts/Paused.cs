@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 public class Paused : MonoBehaviour
 {
     [SerializeField] private GameObject pause;
+    private int menuSene;
+
     public void Start()
     {
         pause.SetActive(false);
@@ -26,7 +28,7 @@ public class Paused : MonoBehaviour
 
     public void Menu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(menuSene);
         Time.timeScale = 1;
     }
 }
