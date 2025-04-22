@@ -112,12 +112,12 @@ TextureImporter:
       name: Ghost_idle_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 0
-        width: 28
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 3
+        y: 1
+        width: 26
+        height: 30
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: Ghost_idle_1
       rect:
         serializedVersion: 2
-        x: 33
+        x: 34
         y: 0
-        width: 28
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 26
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -156,12 +156,12 @@ TextureImporter:
       name: Ghost_idle_2
       rect:
         serializedVersion: 2
-        x: 65
+        x: 66
         y: 0
-        width: 28
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 26
+        height: 28
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -178,12 +178,12 @@ TextureImporter:
       name: Ghost_idle_3
       rect:
         serializedVersion: 2
-        x: 98
-        y: 0
-        width: 27
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 99
+        y: 1
+        width: 25
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d9fd318315e3a1046a4f5c1cc1a875f6
     internalID: 0
     vertices: []
     indices: 
