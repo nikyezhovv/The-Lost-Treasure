@@ -184,7 +184,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Golem_death_0: -5295517665356906718
+      Golem_death_1: 2677187618691347363
+      Golem_death_2: -8782288095121610404
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
