@@ -32,9 +32,10 @@ public class PlayerControls : MonoBehaviour
 
     private const int MaxJumps = 2;
 
+    public Animator anim;
     private Rigidbody2D _rigidbody;
     private Controls _input;
-    private SpriteRenderer _sprite;
+    private Transform _sprite;
 
     private bool _isSprinting;
     private bool _isGrounded;
@@ -55,17 +56,18 @@ public class PlayerControls : MonoBehaviour
     private float _jumpStartSpeed;
     private float _defaultGravityScale;
 
-    public SpriteRenderer PlayerSprite => _sprite;
-    public bool IsFacingLeft => _sprite.flipX;
+   // public Transform PlayerSprite => _sprite;
+    public bool IsFacingLeft => _sprite.rotation.eulerAngles.y > 90;
     public bool IsDashing => _isDashing;
     public bool IsCrouching => _isCrouching;
 
     private void Awake()
     {
+        anim = GetComponent<Animator>();
         _input = new Controls();
         _rigidbody = GetComponent<Rigidbody2D>();
         _defaultGravityScale = _rigidbody.gravityScale;
-        _sprite = GetComponentInChildren<SpriteRenderer>();
+        _sprite = GetComponentInChildren<Transform>();
 
         SetupInputCallbacks();
     }
@@ -81,7 +83,6 @@ public class PlayerControls : MonoBehaviour
         _input.Player.Crouch.performed += _ => StartCrouch();
         _input.Player.Crouch.canceled += _ => StopCrouch();
 
-        //  _input.Player.FallThrough.performed += _ => StartFallThrough();
         _input.Player.FallThrough.performed += _ => _fallThroughButtonHeld = true;
       //  _input.Player.FallThrough.canceled += _ => _fallThroughButtonHeld = false;
     }
@@ -91,6 +92,7 @@ public class PlayerControls : MonoBehaviour
         UpdateGroundedStatus();
         UpdateMovementSpeed();
         HandlePlatformCollisions();
+
 
         if (!_isDashing)
         {
@@ -112,6 +114,8 @@ public class PlayerControls : MonoBehaviour
     {
         if (_isGrounded)
         {
+            anim.SetBool("isJump", false);
+            anim.SetBool("isDown", false);
             _activeMoveSpeed = _movementX * GetCurrentSpeed();
         }
         else
@@ -125,14 +129,19 @@ public class PlayerControls : MonoBehaviour
         _movementX = axis;
         if (axis != 0)
         {
-            _sprite.flipX = axis < 0;
+            anim.SetInteger("State", 1);
+            _sprite.rotation = Quaternion.Euler(0, axis > 0 ? 0 : 180, 0);
+          //  _sprite.flipX = axis < 0;
         }
+        else
+            anim.SetInteger("State", 0);
     }
 
     private void Jump()
     {
         if (_isGrounded || _jumpCount < MaxJumps - 1)
         {
+            anim.SetBool("isJump", true);
             _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, jumpForce);
             _jumpStartSpeed = GetCurrentSpeed();
             _jumpCount++;
@@ -159,7 +168,10 @@ public class PlayerControls : MonoBehaviour
     {
         if (_canDash && !_isCrouching)
         {
-            var dashDirection = new Vector2(_sprite.flipX ? -1 : 1, 0);
+            float currentRotationY = _sprite.rotation.eulerAngles.y;
+
+            anim.SetBool("isJump", true);
+            var dashDirection = new Vector2((currentRotationY > 90) ? -1 : 1, 0);
             _rigidbody.linearVelocity = Vector2.zero;
             _rigidbody.gravityScale = 0f;
             _rigidbody.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
@@ -174,6 +186,7 @@ public class PlayerControls : MonoBehaviour
 
     private void StopDash()
     {
+        anim.SetBool("isDown", true);
         _isDashing = false;
         _rigidbody.gravityScale = _defaultGravityScale;
     }
@@ -185,74 +198,24 @@ public class PlayerControls : MonoBehaviour
 
     private void StartCrouch()
     {
+        anim.SetBool("isCreep", true);
         _isCrouching = true;
         standingCollider.enabled = false;
         crouchingCollider.enabled = true;
-        transform.localScale = new Vector3(1f, 0.5f, 1f);
+   //     transform.localScale = new Vector3(1f, 0.5f, 1f);
     }
 
     private void StopCrouch()
     {
+        anim.SetBool("isCreep", false);
         _isCrouching = false;
         crouchingCollider.enabled = false;
         standingCollider.enabled = true;
-        transform.localScale = new Vector3(1f, 1f, 1f);
+      //  transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
     private void OnEnable() => _input.Enable();
     private void OnDisable() => _input.Disable();
-
-
-
-    //private void UpdateFallThroughPlatform()
-    //{
-    //    if (_isFallingThroughPlatform)
-    //    {
-    //        _fallThroughTimer -= Time.fixedDeltaTime;
-    //        if (_fallThroughTimer <= 0f)
-    //        {
-    //            _isFallingThroughPlatform = false;
-    //        }
-    //    }
-    //}
-
-    //private void StartFallThrough()
-    //{
-    //    if (_isGrounded)
-    //    {
-    //        _isFallingThroughPlatform = true;
-    //        _fallThroughTimer = fallThroughDelay;
-    //        // Optionally, you could disable the collider of the platform you're standing on directly.  However,
-    //        // that would require knowing which specific platform you're standing on. This method is usually more robust.
-    //        IgnorePlatformCollisions();  // Call the method to ignore collisions with platforms
-    //    }
-    //}
-
-    //private void IgnorePlatformCollisions()
-    //{
-    //    // Perform a sphere cast to find the platform we're standing on
-    //    RaycastHit2D hit = Physics2D.CircleCast(groundCheck.position, groundRadius, Vector2.down, 0.1f, layerGrounds);
-
-    //    if (hit.collider != null && hit.collider.CompareTag("Platform"))
-    //    {
-    //        // Get the platform collider and ignore collisions between the player collider and the platform collider
-    //        Collider2D platformCollider = hit.collider;
-    //        Physics2D.IgnoreCollision(standingCollider, platformCollider, true);
-    //        Physics2D.IgnoreCollision(crouchingCollider, platformCollider, true);
-    //        //Start a coroutine to re-enable the collisions after a delay
-    //        StartCoroutine(ReEnablePlatformCollisions(platformCollider, fallThroughDelay));
-    //    }
-    //}
-
-    //private System.Collections.IEnumerator ReEnablePlatformCollisions(Collider2D platformCollider, float delay)
-    //{
-    //    yield return new WaitForSeconds(delay);
-    //    if (platformCollider != null)
-    //    {
-    //        Physics2D.IgnoreCollision(standingCollider, platformCollider, false);
-    //        Physics2D.IgnoreCollision(crouchingCollider, platformCollider, false);
-    //    }
-    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
