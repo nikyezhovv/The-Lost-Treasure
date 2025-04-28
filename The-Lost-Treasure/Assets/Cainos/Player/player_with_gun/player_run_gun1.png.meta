@@ -58,7 +58,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,7 +72,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -96,7 +96,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -124,12 +124,12 @@ TextureImporter:
       name: player_run_gun1_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
-        width: 30
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 2
+        y: 2
+        width: 28
+        height: 26
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -146,12 +146,12 @@ TextureImporter:
       name: player_run_gun1_1
       rect:
         serializedVersion: 2
-        x: 33
-        y: 1
-        width: 32
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 34
+        y: 2
+        width: 30
+        height: 27
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -168,12 +168,12 @@ TextureImporter:
       name: player_run_gun1_2
       rect:
         serializedVersion: 2
-        x: 64
-        y: 1
-        width: 31
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 65
+        y: 2
+        width: 29
+        height: 27
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -190,12 +190,12 @@ TextureImporter:
       name: player_run_gun1_3
       rect:
         serializedVersion: 2
-        x: 98
-        y: 1
-        width: 29
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 99
+        y: 2
+        width: 27
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -212,12 +212,12 @@ TextureImporter:
       name: player_run_gun1_4
       rect:
         serializedVersion: 2
-        x: 131
-        y: 2
-        width: 30
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 132
+        y: 3
+        width: 28
+        height: 27
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -234,12 +234,12 @@ TextureImporter:
       name: player_run_gun1_5
       rect:
         serializedVersion: 2
-        x: 160
-        y: 1
-        width: 31
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 161
+        y: 2
+        width: 29
+        height: 27
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -256,12 +256,12 @@ TextureImporter:
       name: player_run_gun1_6
       rect:
         serializedVersion: 2
-        x: 193
-        y: 1
-        width: 31
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 194
+        y: 2
+        width: 29
+        height: 27
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -278,12 +278,12 @@ TextureImporter:
       name: player_run_gun1_7
       rect:
         serializedVersion: 2
-        x: 226
-        y: 1
-        width: 30
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 227
+        y: 2
+        width: 28
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -300,7 +300,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 90bb3314db78012488c1d5078e7a861a
     internalID: 0
     vertices: []
     indices: 
@@ -309,7 +309,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      player_run_gun1_0: 4706086712433337252
+      player_run_gun1_1: -7948472401016901294
+      player_run_gun1_2: -3207810751947525098
+      player_run_gun1_3: -1881803635972243691
+      player_run_gun1_4: -5749839863455297759
+      player_run_gun1_5: 5615928304779363709
+      player_run_gun1_6: -6186436343845604643
+      player_run_gun1_7: -2229020679742884125
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,22 +1,37 @@
 fileFormatVersion: 2
-guid: d99f3b6c3b54f5744ab9dd4886c6de30
+guid: bf02a14036412df4e882084a05d23aca
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6833230239263305819
-    second: player_attack_gun1_0
+      213: 1341886394275359008
+    second: player_attack_gun1 1_0
   - first:
-      213: 274641538730852249
-    second: player_attack_gun1_1
+      213: 6241235013389357299
+    second: player_attack_gun1 1_1
   - first:
-      213: -9173368232861775037
-    second: player_attack_gun1_2
+      213: -3919812744182873463
+    second: player_attack_gun1 1_2
   - first:
-      213: 7870916050557382782
-    second: player_attack_gun1_3
+      213: 7123847606977284330
+    second: player_attack_gun1 1_3
   - first:
-      213: -4146623579314447363
-    second: player_attack_gun1_4
+      213: -4057023258130955230
+    second: player_attack_gun1 1_4
+  - first:
+      213: -6352338987461419600
+    second: player_attack_gun1 1_5
+  - first:
+      213: -7414217097673013063
+    second: player_attack_gun1 1_6
+  - first:
+      213: 3018326920207969487
+    second: player_attack_gun1 1_7
+  - first:
+      213: 4533127050521219859
+    second: player_attack_gun1 1_8
+  - first:
+      213: -4335227233715668708
+    second: player_attack_gun1 1_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -112,7 +127,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player_attack_gun1_0
+      name: player_attack_gun1 1_0
       rect:
         serializedVersion: 2
         x: 7
@@ -127,14 +142,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b503fb7d2b284de50800000000000000
-      internalID: 6833230239263305819
+      spriteID: 02966b3e0965f9210800000000000000
+      internalID: 1341886394275359008
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_attack_gun1_1
+      name: player_attack_gun1 1_1
       rect:
         serializedVersion: 2
         x: 52
@@ -149,14 +164,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 99f7e9c3609bfc300800000000000000
-      internalID: 274641538730852249
+      spriteID: 3f09dcc5d225d9650800000000000000
+      internalID: 6241235013389357299
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_attack_gun1_2
+      name: player_attack_gun1 1_2
       rect:
         serializedVersion: 2
         x: 106
@@ -171,14 +186,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 34bcb6ed136a1b080800000000000000
-      internalID: -9173368232861775037
+      spriteID: 9824ee4c3170a99c0800000000000000
+      internalID: -3919812744182873463
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_attack_gun1_3
+      name: player_attack_gun1 1_3
       rect:
         serializedVersion: 2
         x: 147
@@ -193,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e70b462327c1b3d60800000000000000
-      internalID: 7870916050557382782
+      spriteID: ae8c5ef97adfcd260800000000000000
+      internalID: 7123847606977284330
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_attack_gun1_4
+      name: player_attack_gun1 1_4
       rect:
         serializedVersion: 2
         x: 198
@@ -215,8 +230,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dfb14b903db3476c0800000000000000
-      internalID: -4146623579314447363
+      spriteID: 2244b9d77de82b7c0800000000000000
+      internalID: -4057023258130955230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_attack_gun1 1_5
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 7
+        width: 48
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bd5f77d855f7d7a0800000000000000
+      internalID: -6352338987461419600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_attack_gun1 1_6
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 7
+        width: 50
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b88295f4d86b1990800000000000000
+      internalID: -7414217097673013063
       vertices: []
       indices: 
       edges: []
@@ -225,7 +284,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: ea96c5304d8616547884964c1c34c39d
+    spriteID: 9cde6393b2e86d542b54fdd9046971b8
     internalID: 0
     vertices: []
     indices: 
@@ -235,11 +294,16 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      player_attack_gun1_0: 6833230239263305819
-      player_attack_gun1_1: 274641538730852249
-      player_attack_gun1_2: -9173368232861775037
-      player_attack_gun1_3: 7870916050557382782
-      player_attack_gun1_4: -4146623579314447363
+      player_attack_gun1 1_0: 1341886394275359008
+      player_attack_gun1 1_1: 6241235013389357299
+      player_attack_gun1 1_2: -3919812744182873463
+      player_attack_gun1 1_3: 7123847606977284330
+      player_attack_gun1 1_4: -4057023258130955230
+      player_attack_gun1 1_5: -6352338987461419600
+      player_attack_gun1 1_6: -7414217097673013063
+      player_attack_gun1 1_7: 3018326920207969487
+      player_attack_gun1 1_8: 4533127050521219859
+      player_attack_gun1 1_9: -4335227233715668708
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
