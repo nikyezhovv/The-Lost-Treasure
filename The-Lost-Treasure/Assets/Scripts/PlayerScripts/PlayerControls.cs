@@ -92,6 +92,7 @@ public class PlayerControls : MonoBehaviour
         UpdateGroundedStatus();
         UpdateMovementSpeed();
         HandlePlatformCollisions();
+        UpdateFallingStatus();
 
 
         if (!_isDashing)
@@ -114,8 +115,6 @@ public class PlayerControls : MonoBehaviour
     {
         if (_isGrounded)
         {
-            anim.SetBool("isJump", false);
-            anim.SetBool("isDown", false);
             _activeMoveSpeed = _movementX * GetCurrentSpeed();
         }
         else
@@ -141,10 +140,25 @@ public class PlayerControls : MonoBehaviour
     {
         if (_isGrounded || _jumpCount < MaxJumps - 1)
         {
-            anim.SetBool("isJump", true);
+            anim.SetBool("isJump", true); //Start jump animation
+            anim.SetBool("isDown", false);
             _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, jumpForce);
             _jumpStartSpeed = GetCurrentSpeed();
             _jumpCount++;
+        }
+    }
+
+    [System.Obsolete]
+    private void UpdateFallingStatus()
+    {
+        if (!_isGrounded && _rigidbody.velocity.y < 0) //If is not grounded and is falling
+        {
+            anim.SetBool("isJump", false);
+            anim.SetBool("isDown", true);
+        }
+        else if (_isGrounded)
+        {
+            anim.SetBool("isDown", false); // Reset when grounded
         }
     }
 
@@ -170,7 +184,6 @@ public class PlayerControls : MonoBehaviour
         {
             float currentRotationY = _sprite.rotation.eulerAngles.y;
 
-            anim.SetBool("isJump", true);
             var dashDirection = new Vector2((currentRotationY > 90) ? -1 : 1, 0);
             _rigidbody.linearVelocity = Vector2.zero;
             _rigidbody.gravityScale = 0f;
