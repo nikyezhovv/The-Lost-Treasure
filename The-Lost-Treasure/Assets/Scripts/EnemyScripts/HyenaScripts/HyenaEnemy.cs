@@ -3,17 +3,21 @@ using UnityEngine;
 public class HyenaEnemy : MonoBehaviour, IDamageable
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 4f;
+    public float moveSpeed = 5f;
     public float chaseRange = 6f;
-    public float attackRange = 3f;
+    public float attackRange = 1.5f;
     
     [Header("Attack Settings")]
-    public int damage = 15;
+    public int damage = 7;
     public float attackCooldown = 1.5f;
     
     [Header("Health Settings")]
-    public float maxHealth = 80f;
-    public float currentHealth = 20f;
+    public float maxHealth = 70f;
+    public float currentHealth;
+    
+    [Header("Knockback Settings")]
+    public float knockbackForce = 5f;
+    public float knockbackDuration = 0.3f;
     
     private Transform _player;
     private Rigidbody2D _rb;
@@ -23,6 +27,8 @@ public class HyenaEnemy : MonoBehaviour, IDamageable
     private Vector2 _startingPosition;
     private bool _isReturning;
     private bool _isHurting;
+    private bool _isKnockback;
+    private float _knockbackTimer;
 
     void Start()
     {
@@ -35,7 +41,7 @@ public class HyenaEnemy : MonoBehaviour, IDamageable
 
     void Update()
     {
-        if (_player == null || _isHurting) return;
+        if (_player == null || _isHurting || _isKnockback) return;
 
         var distanceToPlayer = Vector2.Distance(transform.position, _player.position);
         
@@ -56,6 +62,16 @@ public class HyenaEnemy : MonoBehaviour, IDamageable
         {
             ReturnToStart();
         }
+
+        if (_isKnockback)
+        {
+            _knockbackTimer -= Time.deltaTime;
+            if (_knockbackTimer <= 0)
+            {
+                _isKnockback = false;
+                _rb.linearVelocity = Vector2.zero;
+            }
+        }
     }
 
     public void TakeDamage(float damage)
@@ -63,25 +79,28 @@ public class HyenaEnemy : MonoBehaviour, IDamageable
         currentHealth -= damage;
         _animator.SetTrigger("Hurt");
         _isHurting = true;
-        
+
+        // Отталкивание от игрока
+        Vector2 knockbackDirection = (transform.position - _player.position).normalized;
+        float knockbackForce = 5f; // сила отталкивания (можно вынести в публичное поле)
+        _rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+
         if (currentHealth <= 0)
         {
             Die();
         }
         else
         {
-            Vector2 knockbackDirection = (transform.position - _player.position).normalized;
-            _rb.AddForce(knockbackDirection * 5f, ForceMode2D.Impulse);
-            
-            Invoke("EndHurtState", 0.3f); 
+            Invoke("EndHurtState", 0.4f); // или 0.5f для голема
         }
     }
+
 
     private void EndHurtState()
     {
         _isHurting = false;
     }
-
+    
     public void Die()
     {
         _animator.SetTrigger("Die");
@@ -117,7 +136,7 @@ public class HyenaEnemy : MonoBehaviour, IDamageable
         
         _isReturning = true;
         var direction = (_startingPosition - (Vector2)transform.position).normalized;
-        _rb.linearVelocity = new Vector2(direction.x * moveSpeed * 0.7f, _rb.linearVelocity.y); 
+        _rb.linearVelocity = new Vector2(direction.x * moveSpeed, _rb.linearVelocity.y);
         
         if (direction.x > 0 && !_facingRight)
         {
@@ -138,10 +157,7 @@ public class HyenaEnemy : MonoBehaviour, IDamageable
             _lastAttackTime = Time.time;
             _animator.SetTrigger("Attack");
             
-            var lungeDirection = _facingRight ? Vector2.right : Vector2.left;
-            _rb.AddForce(lungeDirection * 3f, ForceMode2D.Impulse);
-            
-            if (Vector2.Distance(transform.position, _player.position) <= attackRange * 1.2f)
+            if (Vector2.Distance(transform.position, _player.position) <= attackRange)
             {
                 var playerHealth = _player.GetComponent<PlayerHealth>();
                 if (playerHealth != null)

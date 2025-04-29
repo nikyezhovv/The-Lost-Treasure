@@ -201,8 +201,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 4
   chaseRange: 6
-  attackRange: 1
+  attackRange: 3
   damage: 15
   attackCooldown: 1.5
   maxHealth: 80
   currentHealth: 0
+  knockbackForce: 5
+  knockbackDuration: 0.3

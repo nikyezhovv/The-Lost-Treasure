@@ -71,18 +71,22 @@ public class GhostEnemy : MonoBehaviour, IDamageable
         currentHealth -= damage;
         _animator.SetTrigger("Hurt");
         _isHurting = true;
-        
-        _spriteRenderer.color = Color.white;
-        
+
+        // Отталкивание от игрока
+        Vector2 knockbackDirection = (transform.position - _player.position).normalized;
+        float knockbackForce = 5f; // сила отталкивания (можно вынести в публичное поле)
+        _rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+
         if (currentHealth <= 0)
         {
             Die();
         }
         else
         {
-            Invoke("EndHurtState", 0.5f);
+            Invoke("EndHurtState", 0.4f); // или 0.5f для голема
         }
     }
+
 
     private void EndHurtState()
     {

@@ -42,12 +42,10 @@ public class PlayerCombats : MonoBehaviour
         _lastAttackTime = Time.time;
 
         Debug.Log("Player starts attack");
-
-        // Пауза перед уроном (имитация времени на замах)
+        
         yield return new WaitForSeconds(0.1f);
-
-        // Проверка врагов вокруг attackPoint
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        
+        var hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
         if (hitEnemies.Length == 0)
         {

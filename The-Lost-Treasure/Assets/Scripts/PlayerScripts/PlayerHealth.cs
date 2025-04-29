@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
@@ -28,6 +29,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         Debug.Log($"{gameObject.name} has died.");
         // Здесь можешь добавить логику смерти: анимацию, респавн, отключение управления и т.д.
         gameObject.SetActive(false);
+        SceneManager.LoadScene(1);
     }
 
     public void Heal(float amount)

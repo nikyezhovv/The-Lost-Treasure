@@ -28,7 +28,9 @@ public class PlayerControls : MonoBehaviour
 
     [Header("Fall Through Platform")]
     [SerializeField] private float fallThroughDelay = 0.2f;  //*****
-
+    
+    [Header("Map bounds settings")]
+    [SerializeField] private float deathY = -6f;
 
     private const int MaxJumps = 2;
 
@@ -42,6 +44,7 @@ public class PlayerControls : MonoBehaviour
     private bool _canDash = true;
     private bool _isDashing;
     private bool _isCrouching;
+    private PlayerHealth _playerHealth;
 
     private bool _isFallingThroughPlatform;  // Added flag
     private float _fallThroughTimer;  //Added timer
@@ -63,6 +66,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Awake()
     {
+        _playerHealth = GetComponent<PlayerHealth>();
         anim = GetComponent<Animator>();
         _input = new Controls();
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -86,9 +90,14 @@ public class PlayerControls : MonoBehaviour
         _input.Player.FallThrough.performed += _ => _fallThroughButtonHeld = true;
       //  _input.Player.FallThrough.canceled += _ => _fallThroughButtonHeld = false;
     }
-
+    
     private void FixedUpdate()
     {
+        if (transform.position.y < deathY)
+        {
+            _playerHealth.Die();
+        } 
+        
         UpdateGroundedStatus();
         UpdateMovementSpeed();
         HandlePlatformCollisions();
@@ -166,9 +175,11 @@ public class PlayerControls : MonoBehaviour
 
     private void Dash()
     {
+        if (!_isGrounded) return;
+
         if (_canDash && !_isCrouching)
         {
-            float currentRotationY = _sprite.rotation.eulerAngles.y;
+            var currentRotationY = _sprite.rotation.eulerAngles.y;
 
             anim.SetBool("isJump", true);
             var dashDirection = new Vector2((currentRotationY > 90) ? -1 : 1, 0);
@@ -183,6 +194,7 @@ public class PlayerControls : MonoBehaviour
             Invoke(nameof(ResetDash), dashCooldown);
         }
     }
+
 
     private void StopDash()
     {
