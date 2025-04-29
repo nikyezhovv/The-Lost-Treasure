@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Windows;
 
 [RequireComponent(typeof(PlayerControls))]
 public class PlayerCombats : MonoBehaviour
@@ -18,9 +19,12 @@ public class PlayerCombats : MonoBehaviour
     private Controls _input;
     private bool _canAttack = true;
 
+    private Animator _animator;
+
     private void Awake()
     {
         _controls = GetComponent<PlayerControls>();
+        _animator = GetComponent<Animator>();
         _input = new Controls();
         _input.Enable();
     }
@@ -34,26 +38,35 @@ public class PlayerCombats : MonoBehaviour
         {
             StartCoroutine(PerformAttack());
         }
+        //    if (_canAttack)
+        //      _input.Player.Attack.performed += _ => StartCoroutine(PerformAttack());
+        //    _input.Player.Attack.canceled += _ => _animator.SetInteger("Attack", 0);
+
+    }
+    private void SetupInputCallbacks()
+    {
     }
 
-    private IEnumerator PerformAttack()
+        private IEnumerator PerformAttack()
     {
         _canAttack = false;
         _lastAttackTime = Time.time;
-
+        _animator.SetInteger("Attack", 1);
         Debug.Log("Player starts attack");
         
         yield return new WaitForSeconds(0.1f);
         
         var hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-
+       
         if (hitEnemies.Length == 0)
         {
             Debug.Log("No enemies hit.");
         }
         else
         {
+            
             foreach (var enemy in hitEnemies)
+
             {
                 Debug.Log($"Hit enemy: {enemy.gameObject.name}, dealing {attackDamage} damage");
 
@@ -66,6 +79,7 @@ public class PlayerCombats : MonoBehaviour
 
         yield return new WaitForSeconds(attackCooldown - 0.1f);
         _canAttack = true;
+        _animator.SetInteger("Attack", 0);
     }
 
     private void OnDrawGizmosSelected()
