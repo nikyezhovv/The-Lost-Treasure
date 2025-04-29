@@ -60,5 +60,20 @@ TagManager:
   - name: front
     uniqueID: 3525660159
     locked: 0
+  - name: TopDownGround
+    uniqueID: 116045557
+    locked: 0
+  - name: TopDownProps
+    uniqueID: 2279652081
+    locked: 0
+  - name: TopDownPlayer
+    uniqueID: 3296164131
+    locked: 0
+  - name: New Layer 10
+    uniqueID: 2063408033
+    locked: 0
+  - name: New Layer 11
+    uniqueID: 3713115875
+    locked: 0
   m_RenderingLayers:
   - Default
