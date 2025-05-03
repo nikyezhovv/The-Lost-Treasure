@@ -153,6 +153,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FireAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""ebff1f0f-12e6-4fc0-9e2d-c75de2e1bee7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -254,6 +263,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""FallThrough"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""826ab1cd-bb1d-4e70-96eb-82f9618a9bac"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FireAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -269,6 +289,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_FallThrough = m_Player.FindAction("FallThrough", throwIfNotFound: true);
+        m_Player_FireAttack = m_Player.FindAction("FireAttack", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -356,6 +377,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_FallThrough;
+    private readonly InputAction m_Player_FireAttack;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -395,6 +417,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/FallThrough".
         /// </summary>
         public InputAction @FallThrough => m_Wrapper.m_Player_FallThrough;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/FireAttack".
+        /// </summary>
+        public InputAction @FireAttack => m_Wrapper.m_Player_FireAttack;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -442,6 +468,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @FallThrough.started += instance.OnFallThrough;
             @FallThrough.performed += instance.OnFallThrough;
             @FallThrough.canceled += instance.OnFallThrough;
+            @FireAttack.started += instance.OnFireAttack;
+            @FireAttack.performed += instance.OnFireAttack;
+            @FireAttack.canceled += instance.OnFireAttack;
         }
 
         /// <summary>
@@ -474,6 +503,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @FallThrough.started -= instance.OnFallThrough;
             @FallThrough.performed -= instance.OnFallThrough;
             @FallThrough.canceled -= instance.OnFallThrough;
+            @FireAttack.started -= instance.OnFireAttack;
+            @FireAttack.performed -= instance.OnFireAttack;
+            @FireAttack.canceled -= instance.OnFireAttack;
         }
 
         /// <summary>
@@ -563,5 +595,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFallThrough(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "FireAttack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFireAttack(InputAction.CallbackContext context);
     }
 }

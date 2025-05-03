@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Windows;
 
 [RequireComponent(typeof(PlayerControls))]
 public class PlayerCombats : MonoBehaviour
@@ -9,16 +8,21 @@ public class PlayerCombats : MonoBehaviour
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackDamage = 20f;
     [SerializeField] private float attackCooldown = 0.5f;
+    [SerializeField] private float fireAttackCooldown = 1f;
     [SerializeField] private LayerMask enemyLayers;
 
     [Header("References")]
     [SerializeField] private Transform attackPoint;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private Transform crouchFirePoint;
+    [SerializeField] private GameObject fireballPrefab;
     
     private float _lastAttackTime;
+    private float _lastFireAttackTime;
     private PlayerControls _controls;
     private Controls _input;
     private bool _canAttack = true;
-
+    private bool _canFireAttack = true;
     private Animator _animator;
 
     private void Awake()
@@ -31,49 +35,48 @@ public class PlayerCombats : MonoBehaviour
 
     private void Update()
     {
-        if (_controls.IsDashing || _controls.IsCrouching)
+        if (_controls.IsDashing)
             return;
 
         if (_input.Player.Attack.triggered && _canAttack)
         {
             StartCoroutine(PerformAttack());
         }
-        //    if (_canAttack)
-        //      _input.Player.Attack.performed += _ => StartCoroutine(PerformAttack());
-        //    _input.Player.Attack.canceled += _ => _animator.SetInteger("Attack", 0);
 
+        if (_input.Player.FireAttack.triggered && _canFireAttack)
+        {
+            StartCoroutine(PerformFireAttack());
+        }
     }
-    private void SetupInputCallbacks()
+
+    private IEnumerator PerformFireAttack()
     {
+        _canFireAttack = false;
+        _lastFireAttackTime = Time.time;
+        
+        
+        var currentFirePoint = _controls.IsCrouching ? crouchFirePoint : firePoint;
+        Instantiate(fireballPrefab, currentFirePoint.position, currentFirePoint.rotation);
+        
+        yield return new WaitForSeconds(fireAttackCooldown);
+        _canFireAttack = true;
     }
-
-        private IEnumerator PerformAttack()
+    
+    private IEnumerator PerformAttack()
     {
         _canAttack = false;
         _lastAttackTime = Time.time;
         _animator.SetInteger("Attack", 1);
-        Debug.Log("Player starts attack");
         
         yield return new WaitForSeconds(0.1f);
         
         var hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
        
-        if (hitEnemies.Length == 0)
+        foreach (var enemy in hitEnemies)
         {
-            Debug.Log("No enemies hit.");
-        }
-        else
-        {
-            
-            foreach (var enemy in hitEnemies)
-
+            if (enemy.TryGetComponent<IDamageable>(out var damageable))
             {
-                Debug.Log($"Hit enemy: {enemy.gameObject.name}, dealing {attackDamage} damage");
-
-                if (enemy.TryGetComponent<IDamageable>(out var damageable))
-                {
-                    damageable.TakeDamage(attackDamage);
-                }
+                damageable.TakeDamage(attackDamage);
             }
         }
 
