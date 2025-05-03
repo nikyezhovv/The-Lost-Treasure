@@ -5,6 +5,10 @@
 
 The-Lost-Treasure/Logs/
 The-Lost-Treasure/Library/
+The-Lost-Treasure/Temp/
+The-Lost-Treasure/Obj/
+The-Lost-Treasure/Build/
+The-Lost-Treasure/Builds/
 
 .utmp/
 /[Ll]ibrary/

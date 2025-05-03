@@ -1,12 +1,16 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
     [Header("Health Settings")]
     [SerializeField] private float maxHealth = 100f;
-
+    
+    public Image healthBar;
+    
     private float _currentHealth;
+    
 
     private void Awake()
     {
@@ -16,6 +20,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         _currentHealth -= damage;
+        healthBar.fillAmount = _currentHealth / 100;
         Debug.Log($"{gameObject.name} took {damage} damage. Current health: {_currentHealth}");
 
         if (_currentHealth <= 0)
