@@ -5,7 +5,7 @@ public class FireballScript : MonoBehaviour
 {
     public float speed = 10f;
     public Rigidbody2D rigidBody;
-    public int damage = 10;
+    public int damage = 20;
     public float lifeTime = 2f;
     void Start()
     {
@@ -25,24 +25,13 @@ public class FireballScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        var ghost = hitInfo.GetComponent<GhostEnemy>();
-        if (ghost != null)
+        var damageable = hitInfo.GetComponent<IDamageable>();
+        
+        if (damageable != null)
         {
-            ghost.TakeDamage(damage);
+            damageable.TakeDamage(damage);
         }
-    
-        var hyena = hitInfo.GetComponent<HyenaEnemy>();
-        if (hyena != null)
-        {
-            hyena.TakeDamage(damage);
-        }
-    
-        var golem = hitInfo.GetComponent<GolemEnemy>();
-        if (golem != null)
-        {
-            golem.TakeDamage(damage);
-        }
-    
+
         Destroy(gameObject);
     }
 }

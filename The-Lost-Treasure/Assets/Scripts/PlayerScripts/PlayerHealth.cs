@@ -6,14 +6,14 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 {
     [Header("Health Settings")]
     [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private float healthRegenDelay = 2f; // Время без урона перед регенерацией
-    [SerializeField] private float healthRegenRate = 5f;   // Скорость регенерации (единиц в секунду)
+    [SerializeField] private float healthRegenDelay = 2f;
+    [SerializeField] private float healthRegenRate = 5f; 
     
     public Image healthBar;
     
     private float _currentHealth;
     private float _timeSinceLastDamage;
-    private bool _canRegenHealth = false;
+    private bool _canRegenHealth;
 
     private void Awake()
     {
@@ -64,7 +64,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         _currentHealth += amount;
         _currentHealth = Mathf.Min(_currentHealth, maxHealth);
         UpdateHealthBar();
-        Debug.Log($"{gameObject.name} healed by {amount}. Current health: {_currentHealth}");
     }
 
     private void UpdateHealthBar()
