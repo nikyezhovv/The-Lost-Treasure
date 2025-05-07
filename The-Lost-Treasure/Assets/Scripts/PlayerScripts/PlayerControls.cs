@@ -28,7 +28,8 @@ public class PlayerControls : MonoBehaviour
 
     [Header("Fall Through Platform")]
     [SerializeField] private float fallThroughDelay = 0.2f;  //*****
-    
+    [SerializeField] private bool isEnter = false;
+
     [Header("Map bounds settings")]
     [SerializeField] private float deathY = -6f;
 
@@ -149,6 +150,7 @@ public class PlayerControls : MonoBehaviour
     {
         if (_isGrounded || _jumpCount < MaxJumps - 1)
         {
+            _fallThroughButtonHeld = true;
             anim.SetBool("isJump", true); //Start jump animation
             anim.SetBool("isDown", false);
             _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, jumpForce);
@@ -162,6 +164,8 @@ public class PlayerControls : MonoBehaviour
     {
         if (!_isGrounded && _rigidbody.velocity.y < 0) //If is not grounded and is falling
         {
+            if (!isEnter)
+                _fallThroughButtonHeld = false;
             anim.SetBool("isJump", false);
             anim.SetBool("isDown", true);
         }
@@ -246,6 +250,7 @@ public class PlayerControls : MonoBehaviour
     {
         if (collision.CompareTag("Platform") && !_currentPlatformColliders.Contains(collision))
         {
+            isEnter = true;
             _currentPlatformColliders.Add(collision);
         }
     }
@@ -254,6 +259,7 @@ public class PlayerControls : MonoBehaviour
     {
         if (collision.CompareTag("Platform"))
         {
+            isEnter = false;
             _currentPlatformColliders.Remove(collision);
             _fallThroughButtonHeld = false;
         }
