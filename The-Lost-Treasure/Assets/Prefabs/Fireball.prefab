@@ -191,3 +191,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   rigidBody: {fileID: 7118258172837445788}
+  damage: 20
+  lifeTime: 2

@@ -160,7 +160,7 @@ public class PlayerControls : MonoBehaviour
     [System.Obsolete]
     private void UpdateFallingStatus()
     {
-        if (!_isGrounded && _rigidbody.velocity.y < 0) //If is not grounded and is falling
+        if (!_isGrounded && _rigidbody.linearVelocity.y < 0) //If is not grounded and is falling
         {
             anim.SetBool("isJump", false);
             anim.SetBool("isDown", true);
