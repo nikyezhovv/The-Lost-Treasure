@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor.SceneManagement;
 using System.Collections;
+using UnityEngine.Rendering.Universal;
 
 public class DoorTrigers : MonoBehaviour
 {
@@ -8,27 +9,31 @@ public class DoorTrigers : MonoBehaviour
 
     public int doorNumber;
     public bool isOpen;
+    private Light doorLight; // Если ты используешь Light2D
+
 
     private void Start()
     {
         animator = GetComponent<Animator>();
+        doorLight = GetComponentInChildren<Light>(); // Найдёт свет внутри объекта
+
         UpdateDoorVisual();
     }
 
     private void UpdateDoorVisual()
     {
-        //Debug.Log("update" + GameManager.Instance != null + " " + GameManager.Instance.IsDoorOpen(doorNumber));
-        //isOpen = GameManager.Instance != null && GameManager.Instance.IsDoorOpen(doorNumber);
-        //Debug.Log("---UpdateDoorVisual " + isOpen + "  " + GameManager.Instance != null);
+        if (doorLight != null)
+        {
+            doorLight.enabled = isOpen;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("enter");
         UpdateDoorVisual();
         if (isOpen)
             animator.SetBool("open", true);
-            Debug.Log("Open " + animator.GetBool("open"));
+        Debug.Log("+enter isOpen " + isOpen + " " + animator.GetBool("open"));
     }
 
     private void OnTriggerExit2D(Collider2D other)

@@ -208,7 +208,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -776,6 +776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e5c222b9f616434db77fca0a96d8576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fileName: playerData.json
 --- !u!4 &1479034715
 Transform:
   m_ObjectHideFlags: 0
