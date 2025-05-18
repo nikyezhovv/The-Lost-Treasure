@@ -1,5 +1,8 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -32,7 +35,9 @@ public class PlayerControls : MonoBehaviour
 
     [Header("Map bounds settings")]
     [SerializeField] private float deathY = -6f;
-
+    
+    public bool isGrounded;
+    
     private const int MaxJumps = 2;
 
     public Animator anim;
@@ -41,17 +46,16 @@ public class PlayerControls : MonoBehaviour
     private Transform _sprite;
 
     private bool _isSprinting;
-    private bool _isGrounded;
+    
     private bool _canDash = true;
     private bool _isDashing;
     private bool _isCrouching;
     private PlayerHealth _playerHealth;
 
-    private bool _isFallingThroughPlatform;  // Added flag
-    private float _fallThroughTimer;  //Added timer
-
-    // New Variables
-    private List<Collider2D> _currentPlatformColliders = new List<Collider2D>();
+    private bool _isFallingThroughPlatform;
+    private float _fallThroughTimer;
+    
+    private List<Collider2D> _currentPlatformColliders = new ();
     private bool _fallThroughButtonHeld;
 
     private float _movementX;
@@ -59,9 +63,6 @@ public class PlayerControls : MonoBehaviour
     private int _jumpCount;
     private float _jumpStartSpeed;
     private float _defaultGravityScale;
-
-   // public Transform PlayerSprite => _sprite;
-    public bool IsFacingLeft => _sprite.rotation.eulerAngles.y > 90;
     public bool IsDashing => _isDashing;
     public bool IsCrouching => _isCrouching;
 
@@ -89,7 +90,7 @@ public class PlayerControls : MonoBehaviour
         _input.Player.Crouch.canceled += _ => StopCrouch();
 
         _input.Player.FallThrough.performed += _ => _fallThroughButtonHeld = true;
-      //  _input.Player.FallThrough.canceled += _ => _fallThroughButtonHeld = false;
+         _input.Player.FallThrough.canceled += _ => _fallThroughButtonHeld = false;
     }
     
     private void FixedUpdate()
@@ -113,9 +114,9 @@ public class PlayerControls : MonoBehaviour
 
     private void UpdateGroundedStatus()
     {
-        _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, layerGrounds);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, layerGrounds);
 
-        if (_isGrounded)
+        if (isGrounded)
         {
             _jumpCount = 0;
         }
@@ -123,7 +124,7 @@ public class PlayerControls : MonoBehaviour
 
     private void UpdateMovementSpeed()
     {
-        if (_isGrounded)
+        if (isGrounded)
         {
             _activeMoveSpeed = _movementX * GetCurrentSpeed();
         }
@@ -140,7 +141,6 @@ public class PlayerControls : MonoBehaviour
         {
             anim.SetInteger("State", 1);
             _sprite.rotation = Quaternion.Euler(0, axis > 0 ? 0 : 180, 0);
-          //  _sprite.flipX = axis < 0;
         }
         else
             anim.SetInteger("State", 0);
@@ -148,7 +148,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Jump()
     {
-        if (_isGrounded || _jumpCount < MaxJumps - 1)
+        if (isGrounded || _jumpCount < MaxJumps - 1)
         {
             _fallThroughButtonHeld = true;
             anim.SetBool("isJump", true); //Start jump animation
@@ -162,14 +162,14 @@ public class PlayerControls : MonoBehaviour
     [System.Obsolete]
     private void UpdateFallingStatus()
     {
-        if (!_isGrounded && _rigidbody.velocity.y < 0) //If is not grounded and is falling
+        if (!isGrounded && _rigidbody.linearVelocity.y < 0)
         {
             if (!isEnter)
                 _fallThroughButtonHeld = false;
             anim.SetBool("isJump", false);
             anim.SetBool("isDown", true);
         }
-        else if (_isGrounded)
+        else if (isGrounded)
         {
             anim.SetBool("isDown", false); // Reset when grounded
         }
@@ -191,9 +191,28 @@ public class PlayerControls : MonoBehaviour
         return baseSpeed;
     }
 
+    public void Stun(float stunTime)
+    {
+        if (!gameObject.activeInHierarchy) return;
+        StartCoroutine(StunCoroutine(stunTime));
+    }
+
+    private IEnumerator StunCoroutine(float duration)
+    {
+        _input.Disable();
+        //anim.SetBool("isDown", true);
+        _rigidbody.linearVelocity = Vector2.zero;
+
+
+        yield return new WaitForSeconds(duration);
+        
+        //anim.SetBool("isDown", false);
+        _input.Enable();
+    }
+
     private void Dash()
     {
-        if (!_isGrounded) return;
+        if (!isGrounded) return;
 
         if (_canDash && !_isCrouching)
         {
@@ -231,7 +250,6 @@ public class PlayerControls : MonoBehaviour
         _isCrouching = true;
         standingCollider.enabled = false;
         crouchingCollider.enabled = true;
-   //     transform.localScale = new Vector3(1f, 0.5f, 1f);
     }
 
     private void StopCrouch()
@@ -240,7 +258,6 @@ public class PlayerControls : MonoBehaviour
         _isCrouching = false;
         crouchingCollider.enabled = false;
         standingCollider.enabled = true;
-      //  transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
     private void OnEnable() => _input.Enable();
