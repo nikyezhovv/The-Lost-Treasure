@@ -48,7 +48,6 @@ public class PortalToLevel : MonoBehaviour
 
         // 3. Ожидание окончания эффектов
         yield return new WaitForSeconds(Mathf.Max(shakeDuration, fadeDuration)); // Ждем окончания самого длинного эффекта
-
         SceneManager.LoadScene(_SceenNumber);
     }
 

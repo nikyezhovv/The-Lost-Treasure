@@ -6,34 +6,34 @@ EditorUserSettings:
   serializedVersion: 4
   m_ConfigSettings:
     RecentlyUsedSceneGuid-0:
-      value: 5b040d04530c5c5e080f0e71467559444116192f7a2a7163287d1862b4e3673d
-      flags: 0
-    RecentlyUsedSceneGuid-1:
-      value: 5b040d04530c5c5e080f0e71467559444116192f7a2a7163287d1862b4e3673d
-      flags: 0
-    RecentlyUsedSceneGuid-2:
-      value: 5050035e03070d5a5a595d20457b0e44414e4e2c7e7123627a7f4a64b3b9616d
-      flags: 0
-    RecentlyUsedSceneGuid-3:
-      value: 5050035e03070d5a5a595d20457b0e44414e4e2c7e7123627a7f4a64b3b9616d
-      flags: 0
-    RecentlyUsedSceneGuid-4:
       value: 5353555104535b5d5d5b5a7213260e4442154b7d7f7d276578704867b3e1673a
       flags: 0
-    RecentlyUsedSceneGuid-5:
+    RecentlyUsedSceneGuid-1:
       value: 52050d0751030c0c550d552749775b154e4e1b7b747e24622c7c4d67e1b7616a
       flags: 0
-    RecentlyUsedSceneGuid-6:
+    RecentlyUsedSceneGuid-2:
       value: 055203040653505e0e5f592148255e444f164c2b2f7c7e347f784466b2b0303c
       flags: 0
-    RecentlyUsedSceneGuid-7:
+    RecentlyUsedSceneGuid-3:
       value: 5355055f00025e0d550c557048745c44174e4a7a297e7660797a4862b6e16368
       flags: 0
-    RecentlyUsedSceneGuid-8:
+    RecentlyUsedSceneGuid-4:
+      value: 5b040d04530c5c5e080f0e71467559444116192f7a2a7163287d1862b4e3673d
+      flags: 0
+    RecentlyUsedSceneGuid-5:
+      value: 5b520d0503545b0d0c0c0a2715770748154f4d2c7d7d7e627a7d4a35b4e1646a
+      flags: 0
+    RecentlyUsedSceneGuid-6:
+      value: 5b520d0503545b0d0c0c0a2715770748154f4d2c7d7d7e627a7d4a35b4e1646a
+      flags: 0
+    RecentlyUsedSceneGuid-7:
       value: 0752045007070a0359580872477759424f15197f7871753429794f31b2b7313c
       flags: 0
+    RecentlyUsedSceneGuid-8:
+      value: 5050035e03070d5a5a595d20457b0e44414e4e2c7e7123627a7f4a64b3b9616d
+      flags: 0
     RecentlyUsedSceneGuid-9:
-      value: 5b520d0503545b0d0c0c0a2715770748154f4d2c7d7d7e627a7d4a35b4e1646a
+      value: 0752045007070a0359580872477759424f15197f7871753429794f31b2b7313c
       flags: 0
     lightmappingBakingProfile:
       value: 51
