@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(PlayerControls))]
 public class PlayerCombats : MonoBehaviour
@@ -7,7 +6,7 @@ public class PlayerCombats : MonoBehaviour
     [Header("Combat Settings")]
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackDamage = 20f;
-    [SerializeField] private float attackCooldown = 0.5f;
+    [SerializeField] private float attackCooldown = 1f;
     [SerializeField] private float fireAttackCooldown = 1f;
     [SerializeField] private LayerMask enemyLayers;
 
@@ -17,13 +16,13 @@ public class PlayerCombats : MonoBehaviour
     [SerializeField] private Transform crouchFirePoint;
     [SerializeField] private GameObject fireballPrefab;
     
-    private float _lastAttackTime;
-    private float _lastFireAttackTime;
+    private float _nextAttackTime = 0f;
+    private float _nextFireAttackTime = 0f;
     private PlayerControls _controls;
     private Controls _input;
-    private bool _canAttack = true;
-    private bool _canFireAttack = true;
     private Animator _animator;
+    private bool _attackInProgress;
+    private bool _attackInputLock;
 
     private void Awake()
     {
@@ -38,51 +37,72 @@ public class PlayerCombats : MonoBehaviour
         if (_controls.IsDashing)
             return;
 
-        if (_input.Player.Attack.triggered && _canAttack)
-        {
-            StartCoroutine(PerformAttack());
-        }
+        HandleAttackInput();
+        HandleFireAttackInput();
+        ResetAttackInputLock();
+    }
 
-        if (_input.Player.FireAttack.triggered && _canFireAttack)
+    private void HandleAttackInput()
+    {
+        var canAttack = Time.time >= _nextAttackTime && !_attackInProgress;
+
+        if (_input.Player.Attack.triggered && canAttack)
         {
-            StartCoroutine(PerformFireAttack());
+            StartAttack();
         }
     }
 
-    private IEnumerator PerformFireAttack()
+    private void HandleFireAttackInput()
     {
-        _canFireAttack = false;
-        _lastFireAttackTime = Time.time;
+        if (_input.Player.FireAttack.triggered && Time.time >= _nextFireAttackTime)
+        {
+            PerformFireAttack();
+        }
+    }
+
+    private void ResetAttackInputLock()
+    {
+        if (_input.Player.Attack.ReadValue<float>() == 0f)
+        {
+            _attackInputLock = false;
+        }
+    }
+
+    private void StartAttack()
+    {
+        if (_attackInputLock) return;
         
-        
-        var currentFirePoint = _controls.IsCrouching ? crouchFirePoint : firePoint;
-        Instantiate(fireballPrefab, currentFirePoint.position, currentFirePoint.rotation);
-        
-        yield return new WaitForSeconds(fireAttackCooldown);
-        _canFireAttack = true;
+        _attackInProgress = true;
+        _attackInputLock = true;
+        _nextAttackTime = Time.time + attackCooldown;
+        _animator.SetInteger("Attack", 1);
     }
     
-    private IEnumerator PerformAttack()
+    public void DealDamage()
     {
-        _canAttack = false;
-        _lastAttackTime = Time.time;
-        _animator.SetInteger("Attack", 1);
-        
-        yield return new WaitForSeconds(0.1f);
-        
-        var hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+       var hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
        
         foreach (var enemy in hitEnemies)
         {
-            if (enemy.TryGetComponent<IDamageable>(out var damageable))
+            if (enemy.TryGetComponent(out IDamageable damageable))
             {
                 damageable.TakeDamage(attackDamage);
             }
         }
-
-        yield return new WaitForSeconds(attackCooldown - 0.1f);
-        _canAttack = true;
+    }
+    
+    public void EndAttack()
+    {
         _animator.SetInteger("Attack", 0);
+        _attackInProgress = false;
+    }
+
+    private void PerformFireAttack()
+    {
+        _nextFireAttackTime = Time.time + fireAttackCooldown;
+        
+        var currentFirePoint = _controls.IsCrouching ? crouchFirePoint : firePoint;
+        Instantiate(fireballPrefab, currentFirePoint.position, currentFirePoint.rotation);
     }
 
     private void OnDrawGizmosSelected()
