@@ -142,18 +142,20 @@ public class BaseFlyingEnemy : MonoBehaviour, IDamageable
     {
         if (_player == null) return;
 
-        Vector2 scale = transform.localScale;
+        var direction = _player.position.x - transform.position.x;
 
-        if (_player.position.x > transform.position.x && !_facingRight)
+        if (direction > 0 && !_facingRight)
         {
             _facingRight = true;
-            scale.x = Mathf.Abs(scale.x);
+            var scale = transform.localScale;
+            scale.x *= -1;
             transform.localScale = scale;
         }
-        else if (_player.position.x < transform.position.x && _facingRight)
+        else if (direction < 0 && _facingRight)
         {
             _facingRight = false;
-            scale.x = -Mathf.Abs(scale.x);
+            var scale = transform.localScale;
+            scale.x *= -1;
             transform.localScale = scale;
         }
     }
