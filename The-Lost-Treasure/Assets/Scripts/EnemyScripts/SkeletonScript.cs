@@ -1,30 +1,20 @@
 using UnityEngine;
 
-public class SceletonEnemy : BaseEnemy
+public class SkeletonEnemy : BaseEnemy
 {
-    [Header("Stun Settings")]
-    [SerializeField] public float stunDuration;
-    [SerializeField] public float stunDamage;
-    
-    private readonly System.Random _rnd = new();
+    [Header("Stun Settings")] 
+    [SerializeField] public float stunDuration = 2f;
+    [SerializeField] public float stunDamage = 5f;
 
     public override void Attack()
     {
-        if (Time.time - LastAttackTime >= attackCooldown)
-        {
-            Rb.linearVelocity = Vector2.zero;
-            
-            var nextAttackType = _rnd.Next(1, 4);
-            LastAttackTime = Time.time;
-            if (nextAttackType == 3)
-            {
-                Animator.SetTrigger("Attack1");
-            }
-            else
-            {
-                Animator.SetTrigger("Attack");
-            }
-        }
+        if (Time.time - LastAttackTime < attackCooldown)
+            return;
+
+        Rb.linearVelocity = Vector2.zero;
+        LastAttackTime = Time.time;
+
+        Animator.SetTrigger(GetRandomAttackTrigger());
     }
 
     public void Stun()
@@ -40,5 +30,10 @@ public class SceletonEnemy : BaseEnemy
                 playerMovements.Stun(stunDuration);
             }
         }
+    }
+
+    private string GetRandomAttackTrigger()
+    {
+        return Random.value < 0.4f ? "Attack" : "Attack1";
     }
 }

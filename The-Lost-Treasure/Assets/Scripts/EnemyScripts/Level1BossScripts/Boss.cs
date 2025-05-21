@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    public Transform player;
+    [SerializeField] public float aggroRange = 40f;
+    [SerializeField] public Transform player;
     public bool isFlipped;
 
     public void LookAtPlayer()
@@ -23,6 +24,12 @@ public class Boss : MonoBehaviour
             transform.Rotate(0f, 180f, 0f);
             isFlipped = true;
         }
+    }
+    
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, aggroRange);
     }
 
 }

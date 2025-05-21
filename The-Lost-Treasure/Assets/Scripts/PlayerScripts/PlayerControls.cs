@@ -44,25 +44,22 @@ public class PlayerControls : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Controls _input;
     private Transform _sprite;
-
     private bool _isSprinting;
-    
     private bool _canDash = true;
     private bool _isDashing;
     private bool _isCrouching;
     private PlayerHealth _playerHealth;
-
     private bool _isFallingThroughPlatform;
     private float _fallThroughTimer;
-    
     private List<Collider2D> _currentPlatformColliders = new ();
     private bool _fallThroughButtonHeld;
-
     private float _movementX;
     private float _activeMoveSpeed;
     private int _jumpCount;
     private float _jumpStartSpeed;
     private float _defaultGravityScale;
+    private float _poisonSlowMultiplier = 1f;
+    
     public bool IsDashing => _isDashing;
     public bool IsCrouching => _isCrouching;
 
@@ -177,7 +174,7 @@ public class PlayerControls : MonoBehaviour
 
     private float GetCurrentSpeed()
     {
-        float baseSpeed = speed;
+        var baseSpeed = speed;
 
         if (_isCrouching)
         {
@@ -188,7 +185,7 @@ public class PlayerControls : MonoBehaviour
             baseSpeed *= sprintMultiplier;
         }
 
-        return baseSpeed;
+        return baseSpeed * _poisonSlowMultiplier;
     }
 
     public void Stun(float stunTime)
@@ -230,13 +227,22 @@ public class PlayerControls : MonoBehaviour
             Invoke(nameof(ResetDash), dashCooldown);
         }
     }
-
-
+    
     private void StopDash()
     {
         anim.SetBool("isDown", true);
         _isDashing = false;
         _rigidbody.gravityScale = _defaultGravityScale;
+    }
+    
+    public void ApplyPoisonSlow(float slowMultiplier)
+    {
+        _poisonSlowMultiplier = slowMultiplier;
+    }
+
+    public void ClearPoisonSlow()
+    {
+        _poisonSlowMultiplier = 1f;
     }
 
     private void ResetDash()

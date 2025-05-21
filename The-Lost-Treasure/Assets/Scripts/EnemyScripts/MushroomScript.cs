@@ -6,6 +6,11 @@ public class MushroomScript : MonoBehaviour, IDamageable
    [SerializeField] public float attackRange = 2;
    [SerializeField] public float attackDamage = 6;
    [SerializeField] public float attackCooldown = 0.8f;
+
+   [Header("Poison Attack Settings")]
+   [SerializeField] public float poisonAttackDamagePerTick = 2;
+   [SerializeField] public float poisoningDuration = 2;
+   [SerializeField] public float poisoningTickInterval = 0.5f;
    
    [Header("Health Settings")]
    [SerializeField] public float maxHealth = 70f;
@@ -49,16 +54,24 @@ public class MushroomScript : MonoBehaviour, IDamageable
    
    private void DealDamage()
    {
-      // Вызывается из анимации атаки
       if (Vector2.Distance(transform.position, _player.position) <= attackRange)
       {
          var playerHealth = _player.GetComponent<PlayerHealth>();
-         if (playerHealth != null)
+         if (playerHealth == null) return;
+
+         var roll = Random.value;
+         if (roll < 0.6)
          {
             playerHealth.TakeDamage(attackDamage);
          }
+         else
+         {
+            playerHealth.ApplyPoison(poisonAttackDamagePerTick, poisoningDuration, poisoningTickInterval);
+         }
       }
+      
    }
+   
    
    void Flip()
    {
@@ -101,5 +114,4 @@ public class MushroomScript : MonoBehaviour, IDamageable
    {
       _isHurting = false;
    }
-   
 }
