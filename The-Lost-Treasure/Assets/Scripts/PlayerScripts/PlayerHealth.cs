@@ -1,9 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
-public class PlayerHealth : MonoBehaviour, IDamageable
+public class PlayerHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     [SerializeField] public float maxHealth = 100f;
@@ -14,30 +13,37 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [Header("HealthBar Settings")]
     [SerializeField] public Color defaultHealthBarColor = Color.green;
     [SerializeField] public Color poisonedHealthBarColor = new(0.6f, 0, 0.7f);
-    
+
+    [Header("Fade & Respawn")]
+    [SerializeField] public GameObject fadeCanvas;
+    [SerializeField] public float fadeDuration = 2f;
+
     private float _currentHealth;
     private float _timeSinceLastDamage;
-    private bool _canRegenHealth;
     private Coroutine _poisonCoroutine;
     private PlayerControls _playerControls;
+    private SpriteRenderer _fadeRenderer;
+    private bool isDead = false;
 
     private void Awake()
     {
         _currentHealth = maxHealth;
         _timeSinceLastDamage = 0f;
         _playerControls = GetComponent<PlayerControls>();
+        if (fadeCanvas != null)
+            _fadeRenderer = fadeCanvas.GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
+        if (isDead) return;
+
         if (_currentHealth < maxHealth)
         {
             _timeSinceLastDamage += Time.deltaTime;
 
             if (_timeSinceLastDamage >= healthRegenDelay)
-            {
                 Heal(healthRegenRate * Time.deltaTime);
-            }
         }
         else
         {
@@ -47,6 +53,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
+        if (isDead) return;
+
         _currentHealth -= damage;
         _timeSinceLastDamage = 0f;
         UpdateHealthBar();
@@ -55,25 +63,60 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         if (_currentHealth <= 0)
         {
-            Die();
+            StartCoroutine(DieSequence());
         }
     }
 
     public void ApplyPoison(float damagePerTick, float duration, float tickInterval)
     {
+        if (isDead) return;
+
         if (_poisonCoroutine != null)
-        {
             StopCoroutine(_poisonCoroutine);
-        }
 
         _poisonCoroutine = StartCoroutine(PoisonCoroutine(damagePerTick, duration, tickInterval));
     }
 
-    public void Die()
+    private IEnumerator DieSequence()
     {
         Debug.Log($"{gameObject.name} has died.");
-        gameObject.SetActive(false);
-        SceneManager.LoadScene(1);
+
+        isDead = true;
+
+        if (_playerControls != null)
+            _playerControls.enabled = false;
+
+        if (_fadeRenderer != null)
+        {
+            float elapsed = 0f;
+            while (elapsed < fadeDuration)
+            {
+                float alpha = elapsed / fadeDuration;
+                _fadeRenderer.color = new Color(0, 0, 0, alpha);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        Respawn();
+    }
+
+    public void Respawn()
+    {
+        _currentHealth = maxHealth;
+        UpdateHealthBar();
+        UpdateHealthBarColor(defaultHealthBarColor);
+        isDead = false;
+
+        GameObject spawnPoint = GameObject.FindGameObjectWithTag("Respawn");
+        if (spawnPoint != null)
+            transform.position = spawnPoint.transform.position;
+
+        if (_fadeRenderer != null)
+            _fadeRenderer.color = new Color(0, 0, 0, 0);
+
+        if (_playerControls != null)
+            _playerControls.enabled = true;
     }
 
     private void Heal(float amount)
@@ -91,11 +134,13 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         while (elapsed < duration)
         {
-            TakeDamage(damagePerTick);
+            if (!isDead)
+                TakeDamage(damagePerTick);
+
             yield return new WaitForSeconds(tickInterval);
             elapsed += tickInterval;
         }
-        
+
         _playerControls?.ClearPoisonSlow();
         UpdateHealthBarColor(defaultHealthBarColor);
         _poisonCoroutine = null;
@@ -105,7 +150,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         if (healthBar == null) return;
         healthBar.fillAmount = _currentHealth / maxHealth;
-        
     }
 
     private void UpdateHealthBarColor(Color color)
@@ -116,4 +160,5 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public float GetCurrentHealth() => _currentHealth;
     public float GetMaxHealth() => maxHealth;
+    public bool IsDead() => isDead;
 }

@@ -94,7 +94,7 @@ public class PlayerControls : MonoBehaviour
     {
         if (transform.position.y < deathY)
         {
-            _playerHealth.Die();
+            _playerHealth.Respawn();
         } 
         
         UpdateGroundedStatus();
