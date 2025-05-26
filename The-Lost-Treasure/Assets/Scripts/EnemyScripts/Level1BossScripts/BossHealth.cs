@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BossHealth : MonoBehaviour, IDamageable
+public class BossHealth : Sounds, IDamageable
 {
     [SerializeField] public int maxHealth = 500;
     [SerializeField] public bool isInvulnerable;
@@ -12,7 +12,7 @@ public class BossHealth : MonoBehaviour, IDamageable
     [SerializeField] private BossHealthBar bossHealthBar;
     [Header("Post-Death Actions")]
     [SerializeField] private GameObject[] unlockOnDeath;
-    [SerializeField] private GameObject makePortal; // Портал, который появится после смерти босса
+    [SerializeField] private GameObject makePortal; // пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
 
     [SerializeField] public int _currentHealth = 500;
@@ -24,6 +24,7 @@ public class BossHealth : MonoBehaviour, IDamageable
 
         Debug.Log($"Boss took {damage} damage. {_currentHealth}HP remaining");
         _currentHealth -= (int)damage;
+        PlaySound(sounds[0]);
         UpdateHealthBar();
 
         if (_currentHealth <= 200)
@@ -44,6 +45,7 @@ public class BossHealth : MonoBehaviour, IDamageable
 
     public void Die()
     {
+        PlaySound(sounds[1]);
         bossHealthBar.DestroyHB();
         Instantiate(deathEffect, transform.position, Quaternion.identity);
         foreach (var obj in unlockOnDeath)
@@ -56,7 +58,7 @@ public class BossHealth : MonoBehaviour, IDamageable
         {
             GameObject portalInstance = Instantiate(makePortal, transform.position, Quaternion.identity);
 
-            // Активация анимации портала (если у него есть Animator)
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ Animator)
             Animator anim = portalInstance.GetComponent<Animator>();
             if (anim != null)
             {
@@ -66,6 +68,7 @@ public class BossHealth : MonoBehaviour, IDamageable
 
 
         Destroy(gameObject);
+        PlaySound(sounds[2]);
     }
 }
 
@@ -123,7 +126,7 @@ public class BossHealth : MonoBehaviour, IDamageable
 //        bossHealthBar.DestroyHB();
 //        Instantiate(deathEffect, transform.position, Quaternion.identity);
 
-//        // Разблокируем все объекты
+//        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 //        foreach (var obj in unlockOnDeath)
 //        {
 //            if (obj != null)

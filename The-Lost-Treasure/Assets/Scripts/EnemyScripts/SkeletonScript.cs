@@ -13,7 +13,7 @@ public class SkeletonEnemy : BaseEnemy
 
         Rb.linearVelocity = Vector2.zero;
         LastAttackTime = Time.time;
-
+        
         Animator.SetTrigger(GetRandomAttackTrigger());
     }
 
@@ -30,6 +30,15 @@ public class SkeletonEnemy : BaseEnemy
                 playerMovements.Stun(stunDuration);
             }
         }
+    }
+
+    private void PlaySwordAttackSound()
+    {
+        PlaySound(sounds[3]);
+    }
+    private void PlayShieldAttackSound()
+    {
+        PlaySound(sounds[4]);
     }
 
     private string GetRandomAttackTrigger()

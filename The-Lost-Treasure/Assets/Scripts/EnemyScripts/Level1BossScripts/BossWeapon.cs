@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BossWeapon : MonoBehaviour
+public class BossWeapon : Sounds
 {
     public int attackDamage = 20;
     public int enragedAttackDamage = 40;
@@ -20,6 +20,11 @@ public class BossWeapon : MonoBehaviour
         {
             colInfo.GetComponent<PlayerHealth>().TakeDamage(attackDamage);
         }
+    }
+
+    private void PlayAttackSound()
+    {
+        PlaySound(sounds[0]);
     }
 
     public void EnragedAttack()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class PlayerControls : MonoBehaviour
+public class PlayerControls : Sounds
 {
     [Header("Movement Settings")]
     [SerializeField] private float speed = 4f;
@@ -48,6 +48,7 @@ public class PlayerControls : MonoBehaviour
     private bool _canDash = true;
     private bool _isDashing;
     private bool _isCrouching;
+    private bool _wasGrounded;
     private PlayerHealth _playerHealth;
     private bool _isFallingThroughPlatform;
     private float _fallThroughTimer;
@@ -94,19 +95,31 @@ public class PlayerControls : MonoBehaviour
     {
         if (transform.position.y < deathY)
         {
+            PlaySound(sounds[3]);
             _playerHealth.Respawn();
         } 
         
+        var wasGrounded = isGrounded;
         UpdateGroundedStatus();
+        
+        if (!wasGrounded && isGrounded)
+        {
+            PlayLandingSound();
+        }
+    
         UpdateMovementSpeed();
         HandlePlatformCollisions();
         UpdateFallingStatus();
-
 
         if (!_isDashing)
         {
             _rigidbody.linearVelocity = new Vector2(_activeMoveSpeed, _rigidbody.linearVelocity.y);
         }
+    }
+
+    private void PlayLandingSound()
+    {
+        PlaySound(sounds[2]);
     }
 
     private void UpdateGroundedStatus()
@@ -134,6 +147,7 @@ public class PlayerControls : MonoBehaviour
     private void Move(float axis)
     {
         _movementX = axis;
+        
         if (axis != 0)
         {
             anim.SetInteger("State", 1);
@@ -150,6 +164,7 @@ public class PlayerControls : MonoBehaviour
             _fallThroughButtonHeld = true;
             anim.SetBool("isJump", true); //Start jump animation
             anim.SetBool("isDown", false);
+            PlaySound(sounds[1]);
             _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, jumpForce);
             _jumpStartSpeed = GetCurrentSpeed();
             _jumpCount++;
@@ -157,7 +172,7 @@ public class PlayerControls : MonoBehaviour
     }
 
     [System.Obsolete]
-    private void UpdateFallingStatus()
+    private void UpdateFallingStatus()  
     {
         if (!isGrounded && _rigidbody.linearVelocity.y < 0)
         {
@@ -168,8 +183,15 @@ public class PlayerControls : MonoBehaviour
         }
         else if (isGrounded)
         {
-            anim.SetBool("isDown", false); // Reset when grounded
+            anim.SetBool("isDown", false);
+            // Reset when grounded
         }
+    }
+
+    //Вызывается из аниматора
+    private void PlayWalkSound()
+    {
+        PlaySound(sounds[0]);
     }
 
     private float GetCurrentSpeed()

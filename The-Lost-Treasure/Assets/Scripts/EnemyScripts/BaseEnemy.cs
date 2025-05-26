@@ -2,7 +2,7 @@ using UnityEditor.EventSystems;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class BaseEnemy : MonoBehaviour, IDamageable
+public class BaseEnemy : Sounds, IDamageable
 {
     [Header("Movement Settings")] [SerializeField]
     public float moveSpeed = 5f;
@@ -93,6 +93,7 @@ public class BaseEnemy : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         if (_isHurting) return;
+        PlaySound(sounds[0]);
         _currentHealth -= damage;
         Animator.SetTrigger("Hurt");
         _isHurting = true;
@@ -118,6 +119,7 @@ public class BaseEnemy : MonoBehaviour, IDamageable
 
     public void Die()
     {
+        PlaySound(sounds[1]);
         Animator.SetTrigger("Die");
         GetComponent<Collider2D>().enabled = false;
         Rb.simulated = false;
@@ -129,6 +131,7 @@ public class BaseEnemy : MonoBehaviour, IDamageable
     {
         Vector2 direction = (Player.position - transform.position).normalized;
         Rb.linearVelocity = new Vector2(direction.x * moveSpeed, Rb.linearVelocity.y);
+        
 
         if (direction.x > 0 && !_facingRight || direction.x < 0 && _facingRight)
         {
@@ -140,7 +143,7 @@ public class BaseEnemy : MonoBehaviour, IDamageable
 
     void ReturnToStart()
     {
-        if (Vector2.Distance(transform.position, _startingPosition) < 0.1f)
+        if (Vector2.Distance(transform.position, _startingPosition) < 1f)
         {
             Rb.linearVelocity = Vector2.zero;
             _isReturning = false;
@@ -174,7 +177,11 @@ public class BaseEnemy : MonoBehaviour, IDamageable
         }
     }
     
-
+    private void PlayAttackSound()
+    {
+        //Вызывается из анимации
+        PlaySound(sounds[3]);
+    }
     private void DealDamage()
     {
         // Вызывается из анимации атаки

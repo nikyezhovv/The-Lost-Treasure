@@ -1,7 +1,8 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerControls))]
-public class PlayerCombats : MonoBehaviour
+public class PlayerCombats : Sounds
 {
     [Header("Combat Settings")]
     [SerializeField] private float attackRange = 2f;
@@ -23,6 +24,7 @@ public class PlayerCombats : MonoBehaviour
     private Animator _animator;
     private bool _attackInProgress;
     private bool _attackInputLock;
+    private float _fireAttackDelay = 0.6f;
 
     private void Awake()
     {
@@ -76,6 +78,7 @@ public class PlayerCombats : MonoBehaviour
         _attackInputLock = true;
         _nextAttackTime = Time.time + attackCooldown;
         _animator.SetInteger("Attack", 1);
+        PlaySound(sounds[0]);
     }
     
     public void DealDamage()
@@ -99,7 +102,15 @@ public class PlayerCombats : MonoBehaviour
 
     private void PerformFireAttack()
     {
+        PlaySound(sounds[1]);
         _nextFireAttackTime = Time.time + fireAttackCooldown;
+        StartCoroutine(FireAfterDelay());
+    }
+    
+    private IEnumerator FireAfterDelay()
+    {
+        // Ждем указанное время перед выстрелом
+        yield return new WaitForSeconds(_fireAttackDelay);
         
         var currentFirePoint = _controls.IsCrouching ? crouchFirePoint : firePoint;
         Instantiate(fireballPrefab, currentFirePoint.position, currentFirePoint.rotation);

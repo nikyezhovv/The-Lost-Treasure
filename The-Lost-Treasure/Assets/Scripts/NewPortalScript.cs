@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 public class PortalTeleporter : MonoBehaviour
 {
     [Header("Teleport Settings")]
-    public int sceneToLoad = 1; // Номер сцены, куда телепортировать
+    public int sceneToLoad = 1; // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public float fadeDuration = 2f;
 
     [Header("UI & Fade")]
-    public GameObject fadeCanvas;              // Объект затемнения (SpriteRenderer с альфа = 0)
-    public GameObject promptTextObject;        // Объект с TextMeshPro для текста "Войти"
+    public GameObject fadeCanvas;              // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (SpriteRenderer пїЅ пїЅпїЅпїЅпїЅпїЅ = 0)
+    public GameObject promptTextObject;        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ TextMeshPro пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅ"
 
     private bool isPlayerNear = false;
     private SpriteRenderer fadeRenderer;
@@ -63,7 +63,7 @@ public class PortalTeleporter : MonoBehaviour
             if (promptTextObject != null)
             {
                 promptTextObject.SetActive(true);
-                promptTextObject.GetComponent<TextMeshProUGUI>().text = "Нажмите Enter чтобы войти";
+                promptTextObject.GetComponent<TextMeshProUGUI>().text = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Enter пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ";
             }
         }
     }

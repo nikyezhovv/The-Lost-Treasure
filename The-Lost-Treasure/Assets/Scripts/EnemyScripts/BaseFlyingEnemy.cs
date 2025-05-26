@@ -2,7 +2,7 @@ using UnityEngine;
 using Pathfinding;
 using Unity.VisualScripting;
 
-public class BaseFlyingEnemy : MonoBehaviour, IDamageable
+public class BaseFlyingEnemy : Sounds, IDamageable
 {
     [Header("Detection & Attack")] [SerializeField]
     private float activationRange = 8f;
@@ -91,6 +91,7 @@ public class BaseFlyingEnemy : MonoBehaviour, IDamageable
     {
         if (_isHurting) return;
         currentHealth -= damage;
+        PlaySound(sounds[0]);
         _animator.SetTrigger("Hurt");
         _isHurting = true;
         
@@ -111,6 +112,7 @@ public class BaseFlyingEnemy : MonoBehaviour, IDamageable
 
     public void Die()
     {
+        PlaySound(sounds[1]);
         _animator.SetTrigger("Die");
         GetComponent<Collider2D>().enabled = false;
 
@@ -138,6 +140,11 @@ public class BaseFlyingEnemy : MonoBehaviour, IDamageable
         }
     }
 
+    private void PlayAttackSound()
+    {
+        PlaySound(sounds[2]);
+    }
+    
     void Flip()
     {
         if (_player == null) return;

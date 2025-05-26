@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : Sounds
 {
     [Header("Health Settings")]
     [SerializeField] public float maxHealth = 100f;
@@ -56,6 +56,7 @@ public class PlayerHealth : MonoBehaviour
         if (isDead) return;
 
         _currentHealth -= damage;
+        PlaySound(sounds[0]);
         _timeSinceLastDamage = 0f;
         UpdateHealthBar();
 
@@ -63,6 +64,7 @@ public class PlayerHealth : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
+            PlaySound(sounds[2]);
             StartCoroutine(DieSequence());
         }
     }
@@ -72,7 +74,10 @@ public class PlayerHealth : MonoBehaviour
         if (isDead) return;
 
         if (_poisonCoroutine != null)
+        {
+            PlaySound(sounds[1]);
             StopCoroutine(_poisonCoroutine);
+        }
 
         _poisonCoroutine = StartCoroutine(PoisonCoroutine(damagePerTick, duration, tickInterval));
     }

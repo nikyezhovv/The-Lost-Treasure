@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MushroomScript : MonoBehaviour, IDamageable
+public class MushroomScript : Sounds, IDamageable
 {
    [Header("Attack Settings")]
    [SerializeField] public float attackRange = 2;
@@ -88,6 +88,7 @@ public class MushroomScript : MonoBehaviour, IDamageable
    
    public void Die()
    {
+      PlaySound(sounds[0]);
       _animator.SetTrigger("Die");
       GetComponent<Collider2D>().enabled = false;
       enabled = false;
@@ -97,6 +98,7 @@ public class MushroomScript : MonoBehaviour, IDamageable
    public void TakeDamage(float damage)
    {
       _currentHealth -= damage;
+      PlaySound(sounds[1]);
       _animator.SetTrigger("Hurt");
       _isHurting = true;
 
@@ -108,6 +110,11 @@ public class MushroomScript : MonoBehaviour, IDamageable
       {
          Invoke("EndHurtState", 0.4f);
       }
+   }
+
+   private void PlayAttackSound()
+   {
+      PlaySound(sounds[2]);
    }
    
    private void EndHurtState()

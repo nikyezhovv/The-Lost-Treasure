@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Cainos.PixelArtTopDown_Basic
 {
-    public class TopDownCharacterController : MonoBehaviour
+    public class TopDownCharacterController : Sounds
     {
         public float speed;
 
@@ -15,6 +15,10 @@ namespace Cainos.PixelArtTopDown_Basic
             animator = GetComponent<Animator>();
         }
 
+        private void PlayWalkSound()
+        {
+            PlaySound(sounds[0]);
+        }
 
         private void Update()
         {
@@ -40,7 +44,7 @@ namespace Cainos.PixelArtTopDown_Basic
                 dir.y = -1;
                 animator.SetInteger("Direction", 0);
             }
-
+            
             dir.Normalize();
             animator.SetBool("IsMoving", dir.magnitude > 0);
 
