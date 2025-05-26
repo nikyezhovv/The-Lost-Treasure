@@ -6,6 +6,9 @@ using UnityEngine.Serialization;
 
 public class PlayerControls : Sounds
 {
+    [Header("Gun Swap")]
+    [SerializeField] private bool canSwapGun;
+    
     [Header("Movement Settings")]
     [SerializeField] private float speed = 4f;
     [SerializeField] private float sprintMultiplier = 1.5f;
@@ -60,9 +63,12 @@ public class PlayerControls : Sounds
     private float _jumpStartSpeed;
     private float _defaultGravityScale;
     private float _poisonSlowMultiplier = 1f;
+    private int _gunType;
     
     public bool IsDashing => _isDashing;
     public bool IsCrouching => _isCrouching;
+
+    public int GunType => _gunType;
 
     private void Awake()
     {
@@ -86,9 +92,10 @@ public class PlayerControls : Sounds
         _input.Player.Dash.performed += _ => Dash();
         _input.Player.Crouch.performed += _ => StartCrouch();
         _input.Player.Crouch.canceled += _ => StopCrouch();
-
         _input.Player.FallThrough.performed += _ => _fallThroughButtonHeld = true;
-         _input.Player.FallThrough.canceled += _ => _fallThroughButtonHeld = false;
+        _input.Player.FallThrough.canceled += _ => _fallThroughButtonHeld = false;
+        _input.Player.SwitchWeapon1.performed += _ => SwitchWeapon(0);
+        _input.Player.SwitchWeapon2.performed += _ => SwitchWeapon(1);
     }
     
     private void FixedUpdate()
@@ -120,6 +127,15 @@ public class PlayerControls : Sounds
     private void PlayLandingSound()
     {
         PlaySound(sounds[2]);
+    }
+    
+    private void SwitchWeapon(int weaponIndex)
+    {
+        if (!canSwapGun || _gunType == weaponIndex) return;
+        anim.SetInteger("GunType", weaponIndex);
+        _gunType = weaponIndex;
+        PlaySound(sounds[4]);
+        Debug.Log("Switched to weapon: " + weaponIndex);
     }
 
     private void UpdateGroundedStatus()

@@ -44141,6 +44141,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4bd942a9762e66844bd5de33fe060492, type: 3}
   - {fileID: 8300000, guid: f6f2e2b4387a36e4086cc6e99bcbf9c5, type: 3}
   - {fileID: 8300000, guid: bb7b1aaa32294ed4784cf284b8192de4, type: 3}
+  - {fileID: 8300000, guid: d09b6fbd727b5e543b9dcee12a04dc81, type: 3}
+  canSwapGun: 1
   speed: 4
   sprintMultiplier: 1.5
   crouchMultiplier: 0.5
@@ -44281,9 +44283,14 @@ MonoBehaviour:
   sounds:
   - {fileID: 8300000, guid: 89345f00facf7534f98b93b8b3d23dbd, type: 3}
   - {fileID: 8300000, guid: d2afe6879e4e16a459cda0535b06cf66, type: 3}
-  attackRange: 0.6
-  attackDamage: 20
-  attackCooldown: 0.5
+  - {fileID: 8300000, guid: a555acaf833fd0847ac342569a96df8d, type: 3}
+  - {fileID: 8300000, guid: 8dc93d5986d89ed43a749b6eb1092377, type: 3}
+  swordAttackRange: 2
+  swordAttackDamage: 20
+  swordAttackCooldown: 1
+  staffAttackRange: 1.5
+  staffAttackDamage: 15
+  staffAttackCooldown: 0.7
   fireAttackCooldown: 1
   enemyLayers:
     serializedVersion: 2

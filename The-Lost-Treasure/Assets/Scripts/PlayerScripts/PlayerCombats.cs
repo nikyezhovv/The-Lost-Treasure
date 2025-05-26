@@ -1,13 +1,14 @@
-using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerControls))]
 public class PlayerCombats : Sounds
 {
     [Header("Combat Settings")]
-    [SerializeField] private float attackRange = 2f;
-    [SerializeField] private float attackDamage = 20f;
-    [SerializeField] private float attackCooldown = 1f;
+    [SerializeField] private float swordAttackRange = 2f;
+    [SerializeField] private float swordAttackDamage = 20f;
+    [SerializeField] private float swordAttackCooldown = 1f;
+    [SerializeField] private float staffAttackRange = 1.5f;
+    [SerializeField] private float staffAttackDamage = 15f;
+    [SerializeField] private float staffAttackCooldown = 0.7f;
     [SerializeField] private float fireAttackCooldown = 1f;
     [SerializeField] private LayerMask enemyLayers;
 
@@ -18,13 +19,17 @@ public class PlayerCombats : Sounds
     [SerializeField] private GameObject fireballPrefab;
     
     private float _nextAttackTime = 0f;
-    private float _nextFireAttackTime = 0f;
+    private float _nextSpecialAttackTime = 0f;
     private PlayerControls _controls;
     private Controls _input;
     private Animator _animator;
     private bool _attackInProgress;
     private bool _attackInputLock;
     private float _fireAttackDelay = 0.6f;
+    
+    private IGun _currentWeapon;
+    private SwordWeapon _swordWeapon;
+    private StaffWeapon _staffWeapon;
 
     private void Awake()
     {
@@ -32,6 +37,11 @@ public class PlayerCombats : Sounds
         _animator = GetComponent<Animator>();
         _input = new Controls();
         _input.Enable();
+        
+        _swordWeapon = new SwordWeapon(swordAttackDamage, swordAttackRange, swordAttackCooldown);
+        _staffWeapon = new StaffWeapon(staffAttackDamage, staffAttackRange, staffAttackCooldown, fireAttackCooldown, fireballPrefab);
+        
+        SetWeapon(_controls.GunType);
     }
 
     private void Update()
@@ -39,9 +49,24 @@ public class PlayerCombats : Sounds
         if (_controls.IsDashing)
             return;
 
+        HandleWeaponSwitch();
         HandleAttackInput();
-        HandleFireAttackInput();
+        HandleSpecialAttackInput();
         ResetAttackInputLock();
+    }
+
+    private void HandleWeaponSwitch()
+    {
+        if (_input.Player.SwitchWeapon1.triggered || _input.Player.SwitchWeapon2.triggered)
+        {
+            var newWeaponType = _controls.GunType;
+            SetWeapon(newWeaponType);
+        }
+    }
+
+    private void SetWeapon(int weaponType)
+    {
+        _currentWeapon = weaponType == 0 ? _staffWeapon : _swordWeapon;
     }
 
     private void HandleAttackInput()
@@ -54,11 +79,11 @@ public class PlayerCombats : Sounds
         }
     }
 
-    private void HandleFireAttackInput()
+    private void HandleSpecialAttackInput()
     {
-        if (_input.Player.FireAttack.triggered && Time.time >= _nextFireAttackTime)
+        if (_input.Player.FireAttack.triggered && Time.time >= _nextSpecialAttackTime)
         {
-            PerformFireAttack();
+            PerformSpecialAttack();
         }
     }
 
@@ -76,20 +101,34 @@ public class PlayerCombats : Sounds
         
         _attackInProgress = true;
         _attackInputLock = true;
-        _nextAttackTime = Time.time + attackCooldown;
-        _animator.SetInteger("Attack", 1);
-        PlaySound(sounds[0]);
+        _nextAttackTime = Time.time + _currentWeapon.GetAttackCooldown();
+        _currentWeapon.PerformAttack(this);
     }
-    
+
+    // Этот метод вызывается из анимации
     public void DealDamage()
     {
-       var hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        var hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, _currentWeapon.Range, enemyLayers);
        
         foreach (var enemy in hitEnemies)
         {
             if (enemy.TryGetComponent(out IDamageable damageable))
             {
-                damageable.TakeDamage(attackDamage);
+                damageable.TakeDamage(_currentWeapon.Damage);
+            }
+        }
+    }
+
+    // Этот метод вызывается из анимации
+    public void DealSpecialDamage()
+    {
+        var hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, _currentWeapon.SpecialRange, enemyLayers);
+       
+        foreach (var enemy in hitEnemies)
+        {
+            if (enemy.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.TakeDamage(_currentWeapon.SpecialDamage);
             }
         }
     }
@@ -100,27 +139,34 @@ public class PlayerCombats : Sounds
         _attackInProgress = false;
     }
 
-    private void PerformFireAttack()
+    private void PerformSpecialAttack()
     {
-        PlaySound(sounds[1]);
-        _nextFireAttackTime = Time.time + fireAttackCooldown;
-        StartCoroutine(FireAfterDelay());
+        _nextSpecialAttackTime = Time.time + _currentWeapon.GetSpecialAttackCooldown();
+        _currentWeapon.PerformSpecialAttack(this);
+    }
+
+    public void PlayAttackSound()
+    {
+        var sound =  _currentWeapon is StaffWeapon ? sounds[0] : sounds[2];
+        PlaySound(sound);
     }
     
-    private IEnumerator FireAfterDelay()
+    public void PlaySpecialAttackSound()
     {
-        // Ждем указанное время перед выстрелом
-        yield return new WaitForSeconds(_fireAttackDelay);
-        
-        var currentFirePoint = _controls.IsCrouching ? crouchFirePoint : firePoint;
-        Instantiate(fireballPrefab, currentFirePoint.position, currentFirePoint.rotation);
+        var sound =  _currentWeapon is StaffWeapon ? sounds[1] : sounds[3];
+        PlaySound(sound);
+    }
+    
+    public Transform GetFirePoint(bool isCrouching)
+    {
+        return isCrouching ? crouchFirePoint : firePoint;
     }
 
     private void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        Gizmos.DrawWireSphere(attackPoint.position, _currentWeapon?.Range ?? swordAttackRange);
     }
 
     private void OnEnable() => _input.Enable();
