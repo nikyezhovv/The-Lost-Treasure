@@ -16,7 +16,7 @@ public class Paused : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             pause.SetActive(true);
-            Time.timeScale = 0;
+            Time.timeScale = 0.0001f;
         }
     }
 
