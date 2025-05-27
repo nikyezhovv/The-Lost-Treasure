@@ -1,26 +1,42 @@
 using System;
-using Unity.VisualScripting;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BossHealth : Sounds, IDamageable
 {
-    [SerializeField] public int maxHealth = 500;
+    [SerializeField] public int maxHealth = 200;
     [SerializeField] public bool isInvulnerable;
     [SerializeField] private Slider slider;
     [SerializeField] private GameObject deathEffect;
     [SerializeField] private BossHealthBar bossHealthBar;
+
     [Header("Post-Death Actions")]
     [SerializeField] private GameObject[] unlockOnDeath;
-    [SerializeField] private GameObject makePortal; // ������, ������� �������� ����� ������ �����
+    [SerializeField] private GameObject makePortal;
 
+    [SerializeField] public int _currentHealth = 200;
 
-    [SerializeField] public int _currentHealth = 500;
+    [Header("Progress Save Settings")]
+    public int nextLevelValue = 1;
+    private string filePath;
+
+    [Serializable]
+    public class PlayerData
+    {
+        public int health = 100;
+        public int level = 0;
+        public string weapon = "steak";
+    }
+
+    private void Start()
+    {
+        filePath = Path.Combine(Application.persistentDataPath, "playerData.json");
+    }
 
     public void TakeDamage(float damage)
     {
-        if (isInvulnerable)
-            return;
+        if (isInvulnerable) return;
 
         Debug.Log($"Boss took {damage} damage. {_currentHealth}HP remaining");
         _currentHealth -= (int)damage;
@@ -32,7 +48,7 @@ public class BossHealth : Sounds, IDamageable
             GetComponent<Animator>().SetBool("IsEnraged", true);
         }
 
-        if (_currentHealth <= 0)    
+        if (_currentHealth <= 0)
         {
             Die();
         }
@@ -48,6 +64,7 @@ public class BossHealth : Sounds, IDamageable
         PlaySound(sounds[1]);
         bossHealthBar.DestroyHB();
         Instantiate(deathEffect, transform.position, Quaternion.identity);
+
         foreach (var obj in unlockOnDeath)
         {
             if (obj != null)
@@ -58,7 +75,6 @@ public class BossHealth : Sounds, IDamageable
         {
             GameObject portalInstance = Instantiate(makePortal, transform.position, Quaternion.identity);
 
-            // ��������� �������� ������� (���� � ���� ���� Animator)
             Animator anim = portalInstance.GetComponent<Animator>();
             if (anim != null)
             {
@@ -66,73 +82,31 @@ public class BossHealth : Sounds, IDamageable
             }
         }
 
+        SaveLevelProgress(nextLevelValue);
 
         Destroy(gameObject);
         PlaySound(sounds[2]);
     }
+
+    private void SaveLevelProgress(int newLevel)
+    {
+        PlayerData data;
+
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            data = JsonUtility.FromJson<PlayerData>(json);
+        }
+        else
+        {
+            data = new PlayerData();
+        }
+
+        data.level = newLevel;
+
+        string updatedJson = JsonUtility.ToJson(data, true);
+        File.WriteAllText(filePath, updatedJson);
+
+        Debug.Log("+JSON файл обновлён после смерти босса: " + filePath);
+    }
 }
-
-
-
-
-
-//using System;
-//using Unity.VisualScripting;
-//using UnityEngine;
-//using UnityEngine.UI;
-
-//public class BossHealth : MonoBehaviour, IDamageable
-//{
-//    [Header("Boss Settings")]
-//    [SerializeField] public int maxHealth = 500;
-//    [SerializeField] public bool isInvulnerable;
-
-//    [Header("UI & FX")]
-//    [SerializeField] private Slider slider;
-//    [SerializeField] private GameObject deathEffect;
-//    [SerializeField] private BossHealthBar bossHealthBar;
-
-//    [Header("Unlock Objects On Death")]
-//    [SerializeField] private GameObject[] unlockOnDeath;
-
-//    private int _currentHealth = 500;
-
-//    public void TakeDamage(float damage)
-//    {
-//        if (isInvulnerable) return;
-
-//        Debug.Log($"Boss took {damage} damage. {_currentHealth}HP remaining");
-//        _currentHealth -= (int)damage;
-//        UpdateHealthBar();
-
-//        if (_currentHealth <= 200)
-//        {
-//            GetComponent<Animator>().SetBool("IsEnraged", true);
-//        }
-
-//        if (_currentHealth <= 0)
-//        {
-//            Die();
-//        }
-//    }
-
-//    private void UpdateHealthBar()
-//    {
-//        slider.value = (float)_currentHealth / maxHealth;
-//    }
-
-//    public void Die()
-//    {
-//        bossHealthBar.DestroyHB();
-//        Instantiate(deathEffect, transform.position, Quaternion.identity);
-
-//        // ������������ ��� �������
-//        foreach (var obj in unlockOnDeath)
-//        {
-//            if (obj != null)
-//                obj.SetActive(true);
-//        }
-
-//        Destroy(gameObject);
-//    }
-//}
