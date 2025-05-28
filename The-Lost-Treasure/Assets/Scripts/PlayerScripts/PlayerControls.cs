@@ -200,11 +200,9 @@ public class PlayerControls : Sounds
         else if (isGrounded)
         {
             anim.SetBool("isDown", false);
-            // Reset when grounded
         }
     }
 
-    //Вызывается из аниматора
     private void PlayWalkSound()
     {
         PlaySound(sounds[0]);
@@ -235,13 +233,11 @@ public class PlayerControls : Sounds
     private IEnumerator StunCoroutine(float duration)
     {
         _input.Disable();
-        //anim.SetBool("isDown", true);
         _rigidbody.linearVelocity = Vector2.zero;
 
 
         yield return new WaitForSeconds(duration);
         
-        //anim.SetBool("isDown", false);
         _input.Enable();
     }
 

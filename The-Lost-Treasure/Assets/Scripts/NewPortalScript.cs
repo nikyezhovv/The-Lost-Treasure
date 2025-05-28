@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 public class PortalTeleporter : MonoBehaviour
 {
     [Header("Teleport Settings")]
-    public int sceneToLoad = 1; // ����� �����, ���� ���������������
+    public int sceneToLoad = 1; 
     public float fadeDuration = 2f;
 
     [Header("UI & Fade")]
-    public GameObject fadeCanvas;              // ������ ���������� (SpriteRenderer � ����� = 0)
-    public GameObject promptTextObject;        // ������ � TextMeshPro ��� ������ "�����"
+    public GameObject fadeCanvas;            
+    public GameObject promptTextObject;      
 
     private bool isPlayerNear = false;
     private SpriteRenderer fadeRenderer;
@@ -63,7 +63,7 @@ public class PortalTeleporter : MonoBehaviour
             if (promptTextObject != null)
             {
                 promptTextObject.SetActive(true);
-                promptTextObject.GetComponent<TextMeshProUGUI>().text = "������� Enter ����� �����";
+                promptTextObject.GetComponent<TextMeshProUGUI>().text = "нажми Enter";
             }
         }
     }

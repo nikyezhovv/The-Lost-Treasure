@@ -24134,7 +24134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c716a7d69ae59aa4a83e7981ff3862ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _SceenNumber: 3
+  _SceenNumber: 4
   shakeDuration: 5
   shakeMagnitude: 0.1
   fadeDuration: 5

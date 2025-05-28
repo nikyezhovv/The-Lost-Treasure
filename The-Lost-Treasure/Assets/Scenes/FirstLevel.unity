@@ -21501,7 +21501,7 @@ PrefabInstance:
     - target: {fileID: 6930122694965717508, guid: cea950ff3b9b0804f967eaec919f19f7,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6930122694965717509, guid: cea950ff3b9b0804f967eaec919f19f7,
         type: 3}
@@ -28617,7 +28617,7 @@ MonoBehaviour:
   sounds:
   - {fileID: 8300000, guid: dbda1687b15d33c4bbc360755979eaca, type: 3}
   - {fileID: 8300000, guid: 50d308f2e2c355e4584b7bcbf0345346, type: 3}
-  maxHealth: 500
+  maxHealth: 40
   isInvulnerable: 0
   slider: {fileID: 1169166469}
   deathEffect: {fileID: 1755349173569476, guid: d22427c6e53975143b6dd2e7b03aeec6,
@@ -28629,7 +28629,7 @@ MonoBehaviour:
   - {fileID: 1863074985}
   - {fileID: 1613687216}
   makePortal: {fileID: 0}
-  _currentHealth: 500
+  _currentHealth: 40
   nextLevelValue: 1
 --- !u!114 &875596209
 MonoBehaviour:
@@ -45006,7 +45006,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.001439333, y: 0.43320733}
+  m_Offset: {x: -0.2377739, y: 0.43320733}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -45016,7 +45016,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8819833, y: 0.87622654}
+  m_Size: {x: 0.7446976, y: 0.87622654}
   m_EdgeRadius: 0
 --- !u!70 &1271379572
 CapsuleCollider2D:
@@ -45052,8 +45052,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.018710136, y: 0.70834714}
-  m_Size: {x: 1.1764364, y: 1.4725615}
+  m_Offset: {x: -0.22882485, y: 0.70834714}
+  m_Size: {x: 0.68136644, y: 1.4725615}
   m_Direction: 0
 --- !u!114 &1271379573
 MonoBehaviour:
@@ -45145,8 +45145,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.01871014, y: 0.7083471}
-  m_Size: {x: 1.176436, y: 1.472561}
+  m_Offset: {x: -0.2392255, y: 0.7083471}
+  m_Size: {x: 0.66056466, y: 1.4725609}
   m_Direction: 0
 --- !u!212 &1271379576
 SpriteRenderer:
@@ -55864,7 +55864,7 @@ Transform:
   m_GameObject: {fileID: 1566657590}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.084, z: 0}
+  m_LocalPosition: {x: -0.348, y: 0.054, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -57452,7 +57452,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!199 &1613687217
 ParticleSystemRenderer:
   serializedVersion: 6
