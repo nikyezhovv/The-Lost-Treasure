@@ -1,6 +1,4 @@
-using UnityEditor.EventSystems;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class BaseEnemy : Sounds, IDamageable
 {

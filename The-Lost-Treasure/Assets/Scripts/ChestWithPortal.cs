@@ -1,6 +1,5 @@
 using System.Collections;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +8,7 @@ public class ChestOpener : MonoBehaviour
     public Animator chestAnimator;
     public GameObject promptText;
     public GameObject portal;
-    public GameObject fadeCanvas; // Затемнение (SpriteRenderer черного цвета с альфа = 0)
+    public GameObject fadeCanvas; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (SpriteRenderer пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ = 0)
 
     [Header("Teleport Settings")]
     public int sceneToLoad = 1;
@@ -56,7 +55,7 @@ public class ChestOpener : MonoBehaviour
     {
         isChestOpened = true;
         chestAnimator.SetBool("Open", true);
-        promptText.GetComponent<TextMeshProUGUI>().text = "Нажмите Enter чтобы взять меч";
+        promptText.GetComponent<TextMeshProUGUI>().text = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Enter пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ";
     }
 
     public IEnumerator TeleportSequence()
@@ -75,7 +74,7 @@ public class ChestOpener : MonoBehaviour
         StartCoroutine(FadeOut());
 
         yield return new WaitForSeconds(Mathf.Max(fadeDuration, shakeDuration));
-        SceneManager.LoadScene(sceneToLoad); // Можно заменить на индекс, если нужно
+        SceneManager.LoadScene(sceneToLoad); // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -84,7 +83,7 @@ public class ChestOpener : MonoBehaviour
         {
             isPlayerNear = true;
             promptText.SetActive(true);
-            promptText.GetComponent<TextMeshProUGUI>().text = "Нажмите Enter чтобы открыть сундук";
+            promptText.GetComponent<TextMeshProUGUI>().text = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Enter пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ";
         }
     }
 

@@ -1,7 +1,4 @@
 using UnityEngine;
-using UnityEditor.SceneManagement;
-using System.Collections;
-using UnityEngine.Rendering.Universal;
 
 public class DoorTrigers : MonoBehaviour
 {
@@ -9,13 +6,13 @@ public class DoorTrigers : MonoBehaviour
 
     public int doorNumber;
     public bool isOpen;
-    private Light doorLight; // Если ты используешь Light2D
+    private Light doorLight; // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Light2D
 
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        doorLight = GetComponentInChildren<Light>(); // Найдёт свет внутри объекта
+        doorLight = GetComponentInChildren<Light>(); // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
         UpdateDoorVisual();
     }
