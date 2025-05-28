@@ -15,11 +15,11 @@ public class BossHealth : Sounds, IDamageable
     [SerializeField] private GameObject[] unlockOnDeath;
     [SerializeField] private GameObject makePortal;
 
-    [SerializeField] public int _currentHealth = 200;
+    [SerializeField] public int currentHealth = 200;
 
     [Header("Progress Save Settings")]
     public int nextLevelValue = 1;
-    private string filePath;
+    private string _filePath;
 
     [Serializable]
     public class PlayerData
@@ -31,24 +31,24 @@ public class BossHealth : Sounds, IDamageable
 
     private void Start()
     {
-        filePath = Path.Combine(Application.persistentDataPath, "playerData.json");
+        _filePath = Path.Combine(Application.persistentDataPath, "playerData.json");
     }
 
     public void TakeDamage(float damage)
     {
         if (isInvulnerable) return;
 
-        Debug.Log($"Boss took {damage} damage. {_currentHealth}HP remaining");
-        _currentHealth -= (int)damage;
+        Debug.Log($"Boss took {damage} damage. {currentHealth}HP remaining");
+        currentHealth -= (int)damage;
         PlaySound(sounds[0]);
         UpdateHealthBar();
 
-        if (_currentHealth <= 200)
+        if (currentHealth <= 200)
         {
             GetComponent<Animator>().SetBool("IsEnraged", true);
         }
 
-        if (_currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -56,7 +56,7 @@ public class BossHealth : Sounds, IDamageable
 
     private void UpdateHealthBar()
     {
-        slider.value = (float)_currentHealth / maxHealth;
+        slider.value = (float)currentHealth / maxHealth;
     }
 
     public void Die()
@@ -73,9 +73,9 @@ public class BossHealth : Sounds, IDamageable
 
         if (makePortal != null)
         {
-            GameObject portalInstance = Instantiate(makePortal, transform.position, Quaternion.identity);
+            var portalInstance = Instantiate(makePortal, transform.position, Quaternion.identity);
 
-            Animator anim = portalInstance.GetComponent<Animator>();
+            var anim = portalInstance.GetComponent<Animator>();
             if (anim != null)
             {
                 anim.SetBool("on", true);
@@ -85,16 +85,15 @@ public class BossHealth : Sounds, IDamageable
         SaveLevelProgress(nextLevelValue);
 
         Destroy(gameObject);
-        PlaySound(sounds[2]);
     }
 
     private void SaveLevelProgress(int newLevel)
     {
         PlayerData data;
 
-        if (File.Exists(filePath))
+        if (File.Exists(_filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = File.ReadAllText(_filePath);
             data = JsonUtility.FromJson<PlayerData>(json);
         }
         else
@@ -104,9 +103,9 @@ public class BossHealth : Sounds, IDamageable
 
         data.level = newLevel;
 
-        string updatedJson = JsonUtility.ToJson(data, true);
-        File.WriteAllText(filePath, updatedJson);
+        var updatedJson = JsonUtility.ToJson(data, true);
+        File.WriteAllText(_filePath, updatedJson);
 
-        Debug.Log("+JSON файл обновлён после смерти босса: " + filePath);
+        Debug.Log("+JSON файл обновлён после смерти босса: " + _filePath);
     }
 }

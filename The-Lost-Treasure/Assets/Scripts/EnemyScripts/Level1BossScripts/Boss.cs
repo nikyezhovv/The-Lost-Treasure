@@ -5,6 +5,8 @@ public class Boss : MonoBehaviour
 {
     [SerializeField] public float aggroRange = 40f;
     [SerializeField] public Transform player;
+    [SerializeField] public int spawnCount = 3;
+    [SerializeField] public GameObject spawnPrefab;
     public bool isFlipped;
 
     public void LookAtPlayer()

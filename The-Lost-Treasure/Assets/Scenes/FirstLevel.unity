@@ -3992,74 +3992,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 716864424}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &135669994
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3943977042890295796, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 55.18841
-      objectReference: {fileID: 0}
-    - target: {fileID: 3943977042890295796, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.398366
-      objectReference: {fileID: 0}
-    - target: {fileID: 3943977042890295796, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3943977042890295796, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3943977042890295796, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3943977042890295796, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3943977042890295796, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3943977042890295796, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3943977042890295796, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3943977042890295796, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7733046030382527109, guid: 26c181ab7801bf649b48c1a8af385948,
-        type: 3}
-      propertyPath: m_Name
-      value: Hyena
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 26c181ab7801bf649b48c1a8af385948, type: 3}
 --- !u!1 &138446779
 GameObject:
   m_ObjectHideFlags: 0
@@ -16937,7 +16869,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -97.70688, y: 4.0399995, z: -10}
+  m_LocalPosition: {x: -96.526886, y: 1.2899998, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21777,7 +21709,7 @@ Transform:
   m_GameObject: {fileID: 668455785}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -97.70688, y: 4.0399995, z: -10}
+  m_LocalPosition: {x: -96.526886, y: 1.2899998, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29179,7 +29111,7 @@ MonoBehaviour:
   sounds:
   - {fileID: 8300000, guid: dbda1687b15d33c4bbc360755979eaca, type: 3}
   - {fileID: 8300000, guid: 50d308f2e2c355e4584b7bcbf0345346, type: 3}
-  maxHealth: 40
+  maxHealth: 400
   isInvulnerable: 0
   slider: {fileID: 1169166469}
   deathEffect: {fileID: 1755349173569476, guid: d22427c6e53975143b6dd2e7b03aeec6,
@@ -29191,7 +29123,7 @@ MonoBehaviour:
   - {fileID: 1863074985}
   - {fileID: 1613687216}
   makePortal: {fileID: 0}
-  _currentHealth: 40
+  currentHealth: 400
   nextLevelValue: 1
 --- !u!114 &875596209
 MonoBehaviour:
@@ -29207,6 +29139,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aggroRange: 40
   player: {fileID: 1271379567}
+  spawnCount: 3
+  spawnPrefab: {fileID: 9171815434905750093, guid: 13d7ce7ae048a444e94b299f862edc3a,
+    type: 3}
   isFlipped: 1
 --- !u!50 &875596210
 Rigidbody2D:
@@ -32999,12 +32934,12 @@ PrefabInstance:
     - target: {fileID: 2183321564951531334, guid: 367acab6b4839d34f847dc791e026c4d,
         type: 3}
       propertyPath: m_SortingLayer
-      value: -1
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 2183321564951531334, guid: 367acab6b4839d34f847dc791e026c4d,
         type: 3}
       propertyPath: m_SortingLayerID
-      value: -1869315837
+      value: -1673889323
       objectReference: {fileID: 0}
     - target: {fileID: 2183321564951531335, guid: 367acab6b4839d34f847dc791e026c4d,
         type: 3}
@@ -33020,6 +32955,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.594
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773235307849620067, guid: 367acab6b4839d34f847dc791e026c4d,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773235307849620067, guid: 367acab6b4839d34f847dc791e026c4d,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773235307849620067, guid: 367acab6b4839d34f847dc791e026c4d,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1673889323
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38613,6 +38563,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Village Props - Statue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893287330390304280, guid: 92a08448cd3527a4aaf11bc404e0f1a0,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893287330390304280, guid: 92a08448cd3527a4aaf11bc404e0f1a0,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1673889323
       objectReference: {fileID: 0}
     - target: {fileID: 8893287330390304281, guid: 92a08448cd3527a4aaf11bc404e0f1a0,
         type: 3}
@@ -45795,7 +45755,7 @@ Transform:
   m_GameObject: {fileID: 1271379564}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 50.69, y: 4.22, z: 0}
+  m_LocalPosition: {x: 51.87, y: 1.47, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -108525,17 +108485,32 @@ PrefabInstance:
     - target: {fileID: 2183321564951531334, guid: 367acab6b4839d34f847dc791e026c4d,
         type: 3}
       propertyPath: m_SortingLayer
-      value: -1
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 2183321564951531334, guid: 367acab6b4839d34f847dc791e026c4d,
         type: 3}
       propertyPath: m_SortingLayerID
-      value: -1869315837
+      value: -1673889323
       objectReference: {fileID: 0}
     - target: {fileID: 2183321564951531335, guid: 367acab6b4839d34f847dc791e026c4d,
         type: 3}
       propertyPath: m_Name
       value: PF Village Props - Stone of Recall
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773235307849620067, guid: 367acab6b4839d34f847dc791e026c4d,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773235307849620067, guid: 367acab6b4839d34f847dc791e026c4d,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773235307849620067, guid: 367acab6b4839d34f847dc791e026c4d,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1673889323
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -114517,4 +114492,3 @@ SceneRoots:
   - {fileID: 168196775}
   - {fileID: 2111088328}
   - {fileID: 1370984560}
-  - {fileID: 135669994}
