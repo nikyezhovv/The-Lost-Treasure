@@ -54,7 +54,7 @@ public class PlayerHealth : Sounds
     public void TakeDamage(float damage)
     {
         if (isDead) return;
-
+        _playerControls.animator.SetTrigger("Hurt"); 
         _currentHealth -= damage;
         PlaySound(sounds[0]);
         _timeSinceLastDamage = 0f;

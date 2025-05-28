@@ -44949,7 +44949,7 @@ MonoBehaviour:
   isEnter: 0
   deathY: -6
   isGrounded: 0
-  anim: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!95 &1271379570
 Animator:
   serializedVersion: 7
@@ -45009,9 +45009,9 @@ BoxCollider2D:
   m_Offset: {x: -0.2377739, y: 0.43320733}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.9375, y: 0.875}
-    newSize: {x: 0.9375, y: 0.875}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 0.875, y: 0.84375}
+    newSize: {x: 0.875, y: 0.84375}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0

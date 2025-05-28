@@ -43,7 +43,7 @@ public class PlayerControls : Sounds
     
     private const int MaxJumps = 2;
 
-    public Animator anim;
+    public Animator animator;
     private Rigidbody2D _rigidbody;
     private Controls _input;
     private Transform _sprite;
@@ -73,7 +73,7 @@ public class PlayerControls : Sounds
     private void Awake()
     {
         _playerHealth = GetComponent<PlayerHealth>();
-        anim = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         _input = new Controls();
         _rigidbody = GetComponent<Rigidbody2D>();
         _defaultGravityScale = _rigidbody.gravityScale;
@@ -132,7 +132,7 @@ public class PlayerControls : Sounds
     private void SwitchWeapon(int weaponIndex)
     {
         if (!canSwapGun || _gunType == weaponIndex) return;
-        anim.SetInteger("GunType", weaponIndex);
+        animator.SetInteger("GunType", weaponIndex);
         _gunType = weaponIndex;
         PlaySound(sounds[4]);
         Debug.Log("Switched to weapon: " + weaponIndex);
@@ -166,11 +166,11 @@ public class PlayerControls : Sounds
         
         if (axis != 0)
         {
-            anim.SetInteger("State", 1);
+            animator.SetInteger("State", 1);
             _sprite.rotation = Quaternion.Euler(0, axis > 0 ? 0 : 180, 0);
         }
         else
-            anim.SetInteger("State", 0);
+            animator.SetInteger("State", 0);
     }
 
     private void Jump()
@@ -178,8 +178,8 @@ public class PlayerControls : Sounds
         if (isGrounded || _jumpCount < MaxJumps - 1)
         {
             _fallThroughButtonHeld = true;
-            anim.SetBool("isJump", true); //Start jump animation
-            anim.SetBool("isDown", false);
+            animator.SetBool("isJump", true); //Start jump animation
+            animator.SetBool("isDown", false);
             PlaySound(sounds[1]);
             _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, jumpForce);
             _jumpStartSpeed = GetCurrentSpeed();
@@ -194,12 +194,12 @@ public class PlayerControls : Sounds
         {
             if (!isEnter)
                 _fallThroughButtonHeld = false;
-            anim.SetBool("isJump", false);
-            anim.SetBool("isDown", true);
+            animator.SetBool("isJump", false);
+            animator.SetBool("isDown", true);
         }
         else if (isGrounded)
         {
-            anim.SetBool("isDown", false);
+            animator.SetBool("isDown", false);
         }
     }
 
@@ -232,12 +232,12 @@ public class PlayerControls : Sounds
 
     private IEnumerator StunCoroutine(float duration)
     {
+        animator.SetBool("IsStun", true);
         _input.Disable();
         _rigidbody.linearVelocity = Vector2.zero;
-
-
-        yield return new WaitForSeconds(duration);
         
+        yield return new WaitForSeconds(duration);
+        animator.SetBool("IsStun", false);
         _input.Enable();
     }
 
@@ -264,7 +264,7 @@ public class PlayerControls : Sounds
     
     private void StopDash()
     {
-        anim.SetBool("isDown", true);
+        animator.SetBool("isDown", true);
         _isDashing = false;
         _rigidbody.gravityScale = _defaultGravityScale;
     }
@@ -286,7 +286,7 @@ public class PlayerControls : Sounds
 
     private void StartCrouch()
     {
-        anim.SetBool("isCreep", true);
+        animator.SetBool("isCreep", true);
         _isCrouching = true;
         standingCollider.enabled = false;
         crouchingCollider.enabled = true;
@@ -294,7 +294,7 @@ public class PlayerControls : Sounds
 
     private void StopCrouch()
     {
-        anim.SetBool("isCreep", false);
+        animator.SetBool("isCreep", false);
         _isCrouching = false;
         crouchingCollider.enabled = false;
         standingCollider.enabled = true;
