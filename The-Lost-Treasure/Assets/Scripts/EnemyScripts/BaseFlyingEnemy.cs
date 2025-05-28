@@ -23,6 +23,7 @@ public class BaseFlyingEnemy : Sounds, IDamageable
     private bool _isHurting;
     private bool _isAIActive;
     private bool _facingRight;
+    private PlayerHealth _playerHealth;
 
 
     void Start()
@@ -33,6 +34,7 @@ public class BaseFlyingEnemy : Sounds, IDamageable
         _aiDestinationSetter = GetComponent<AIDestinationSetter>();
         _aiPath = GetComponent<AIPath>();
         currentHealth = maxHealth;
+        _playerHealth = _player.GetComponent<PlayerHealth>();
 
         if (_aiPath != null && _seeker != null && _aiDestinationSetter != null)
         {
@@ -66,7 +68,7 @@ public class BaseFlyingEnemy : Sounds, IDamageable
 
         Flip();
 
-        if (distanceToPlayer <= activationRange)
+        if (distanceToPlayer <= activationRange && !_playerHealth.isDead)
         {
             if (!_isAIActive)
             {

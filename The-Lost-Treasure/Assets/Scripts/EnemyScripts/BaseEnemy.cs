@@ -41,6 +41,7 @@ public class BaseEnemy : Sounds, IDamageable
     private bool _isHurting;
     private bool _isKnockback;
     private bool _isGrounded;
+    private PlayerHealth _playerHealth;
 
     void Start()
     {
@@ -49,6 +50,7 @@ public class BaseEnemy : Sounds, IDamageable
         Animator = GetComponent<Animator>();
         _startingPosition = transform.position;
         _currentHealth = maxHealth;
+        _playerHealth = Player.GetComponent<PlayerHealth>();
     }
 
     void Update()
@@ -59,7 +61,7 @@ public class BaseEnemy : Sounds, IDamageable
 
         var distanceToPlayer = Vector2.Distance(transform.position, Player.position);
 
-        if (distanceToPlayer <= chaseRange)
+        if (distanceToPlayer <= chaseRange && !_playerHealth.isDead) 
         {
             _isReturning = false;
 
@@ -191,10 +193,9 @@ public class BaseEnemy : Sounds, IDamageable
         // Вызывается из анимации атаки
         if (Vector2.Distance(transform.position, Player.position) <= attackRange)
         {
-            var playerHealth = Player.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
+            if (_playerHealth != null)
             {
-                playerHealth.TakeDamage(attackDamage);
+                _playerHealth.TakeDamage(attackDamage);
             }
         }
     }

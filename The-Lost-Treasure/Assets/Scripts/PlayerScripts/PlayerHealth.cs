@@ -16,20 +16,25 @@ public class PlayerHealth : Sounds
 
     [Header("Fade & Respawn")]
     [SerializeField] public GameObject fadeCanvas;
-    [SerializeField] public float fadeDuration = 2f;
-
+    [SerializeField] public float fadeDuration = 0.5f;
+    
+    public bool isDead;
     private float _currentHealth;
     private float _timeSinceLastDamage;
     private Coroutine _poisonCoroutine;
     private PlayerControls _playerControls;
     private SpriteRenderer _fadeRenderer;
-    private bool isDead = false;
+    private SpriteRenderer _playerRenderer;
+    private Collider2D _playerCollider;
+    
 
     private void Awake()
     {
         _currentHealth = maxHealth;
         _timeSinceLastDamage = 0f;
         _playerControls = GetComponent<PlayerControls>();
+        _playerRenderer = GetComponentInChildren<SpriteRenderer>();
+        _playerCollider = GetComponent<Collider2D>();
         if (fadeCanvas != null)
             _fadeRenderer = fadeCanvas.GetComponent<SpriteRenderer>();
     }
@@ -85,18 +90,31 @@ public class PlayerHealth : Sounds
     private IEnumerator DieSequence()
     {
         Debug.Log($"{gameObject.name} has died.");
-
+        
         isDead = true;
-
+        _playerControls.animator.SetTrigger("IsDead");
+        var rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+            rb.simulated = false; // Отключает физику без отключения объекта
+        }
+        
         if (_playerControls != null)
             _playerControls.enabled = false;
-
+            
+        if (_playerRenderer != null)
+            //_playerRenderer.enabled = false;
+            
+        if (_playerCollider != null)
+            _playerCollider.enabled = false;
+        
         if (_fadeRenderer != null)
         {
-            float elapsed = 0f;
+            var elapsed = 0f;
             while (elapsed < fadeDuration)
             {
-                float alpha = elapsed / fadeDuration;
+                var alpha = elapsed / fadeDuration;
                 _fadeRenderer.color = new Color(0, 0, 0, alpha);
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -112,14 +130,24 @@ public class PlayerHealth : Sounds
         UpdateHealthBar();
         UpdateHealthBarColor(defaultHealthBarColor);
         isDead = false;
-
-        GameObject spawnPoint = GameObject.FindGameObjectWithTag("Respawn");
+        
+        var rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.simulated = true;
+        
+        var spawnPoint = GameObject.FindGameObjectWithTag("Respawn");
         if (spawnPoint != null)
             transform.position = spawnPoint.transform.position;
-
+        
+        if (_playerRenderer != null)
+            _playerRenderer.enabled = true;
+            
+        if (_playerCollider != null)
+            _playerCollider.enabled = true;
+        
         if (_fadeRenderer != null)
             _fadeRenderer.color = new Color(0, 0, 0, 0);
-
+        
         if (_playerControls != null)
             _playerControls.enabled = true;
     }

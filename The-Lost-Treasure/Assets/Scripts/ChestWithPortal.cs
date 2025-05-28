@@ -33,7 +33,7 @@ public class ChestOpener : MonoBehaviour
     {
         if (isChestDisabled) return;
 
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (isPlayerNear && Input.GetKeyDown(KeyCode.Return))
         {
             if (!isChestOpened)
                 OpenChest();

@@ -27,7 +27,7 @@ public class PortalTeleporter : MonoBehaviour
 
     void Update()
     {
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (isPlayerNear && Input.GetKeyDown(KeyCode.Return))
         {
             StartCoroutine(FadeAndTeleport());
         }

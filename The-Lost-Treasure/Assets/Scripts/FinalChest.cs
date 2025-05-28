@@ -35,7 +35,7 @@ public class FinalChestOpener : MonoBehaviour
     {
         if (isChestDisabled) return;
 
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (isPlayerNear && Input.GetKeyDown(KeyCode.Return))
         {
             TriggerVictoryEvent();
         }
@@ -58,7 +58,7 @@ public class FinalChestOpener : MonoBehaviour
 
         victoryText.gameObject.SetActive(true);
         victoryText.color = Color.yellow;
-        victoryText.text = "ПОБЕДА\nПОБЕДА\nПОБЕДА\n\nВы дошли до конца!\n\nНад игрой работали:\nДмитрий\nНастя\nНикита\nТимофей";
+        victoryText.text = "пїЅпїЅпїЅпїЅпїЅпїЅ\nпїЅпїЅпїЅпїЅпїЅпїЅ\nпїЅпїЅпїЅпїЅпїЅпїЅ\n\nпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ!\n\nпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:\nпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\nпїЅпїЅпїЅпїЅпїЅ\nпїЅпїЅпїЅпїЅпїЅпїЅ\nпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(victoryText.rectTransform);
         Vector3 currentPosition = victoryText.rectTransform.localPosition;
@@ -94,7 +94,7 @@ public class FinalChestOpener : MonoBehaviour
         {
             isPlayerNear = true;
             promptText.SetActive(true);
-            promptText.GetComponent<TextMeshProUGUI>().text = "Нажмите Enter чтобы открыть сундук";
+            promptText.GetComponent<TextMeshProUGUI>().text = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Enter пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ";
         }
     }
 
