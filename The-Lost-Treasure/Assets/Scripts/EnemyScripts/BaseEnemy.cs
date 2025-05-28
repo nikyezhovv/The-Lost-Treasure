@@ -129,6 +129,12 @@ public class BaseEnemy : Sounds, IDamageable
 
     void ChasePlayer()
     {
+        if (Mathf.Abs(Player.position.y - transform.position.y) > 4.5f) 
+        {
+            Rb.velocity = Vector2.zero;
+            return;
+        } 
+        
         Vector2 direction = (Player.position - transform.position).normalized;
         Rb.linearVelocity = new Vector2(direction.x * moveSpeed, Rb.linearVelocity.y);
         
@@ -210,6 +216,7 @@ public class BaseEnemy : Sounds, IDamageable
         var origin = new Vector2(transform.position.x, transform.position.y - raycastOffset);
         var rayDirection = new Vector2(direction.x, 0f); 
         
+        Debug.DrawRay(origin, rayDirection * rayDistance, Color.green);
         
         var hit = Physics2D.Raycast(origin, rayDirection, rayDistance, groundLayer);
 
@@ -227,5 +234,17 @@ public class BaseEnemy : Sounds, IDamageable
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+        
+        Gizmos.color = Color.green;
+        
+        var origin = groundCheck != null
+            ? new Vector2(transform.position.x, transform.position.y - raycastOffset)
+            : (Vector2)transform.position;
+
+        var rayDirection = Vector2.right * rayDistance;
+        if (!Application.isPlaying || !_facingRight)
+            rayDirection = Vector2.left * rayDistance;
+
+        Gizmos.DrawLine(origin, origin + rayDirection);
     }
 }

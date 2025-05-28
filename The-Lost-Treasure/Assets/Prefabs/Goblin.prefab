@@ -207,7 +207,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7ee5e24273ec6fc44869b404fc1d6dd3, type: 3}
   - {fileID: 8300000, guid: ccabae72be964ca4b85bc7cc3839b829, type: 3}
   moveSpeed: 5
-  chaseRange: 6
+  chaseRange: 8
   attackRange: 1.5
   attackDamage: 7
   attackCooldown: 1.5
@@ -219,7 +219,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  raycastOffset: 0.3
+  raycastOffset: 0.7
   rayDistance: 2
 --- !u!82 &1193874850388165906
 AudioSource:
