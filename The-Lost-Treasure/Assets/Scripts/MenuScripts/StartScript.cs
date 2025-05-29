@@ -2,6 +2,7 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class MenuScript : MonoBehaviour
     }
 
     public string fileName = "playerData.json";
-    public GameObject fadeCanvas; // перетяни сюда затемняющий объект (SpriteRenderer с alpha = 0)
+    public CanvasGroup canvasGroup;
+    public Image fadeImage;
     public float fadeDuration = 2f;
 
     public void ChangeScenes(int numberScene)
@@ -32,27 +34,32 @@ public class MenuScript : MonoBehaviour
     {
         string path = Path.Combine(Application.persistentDataPath, fileName);
 
-        // Создаём новые дефолтные данные и записываем их
         PlayerData data = new PlayerData();
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
-        Debug.Log("+JSON файл перезаписан: " + path);
+        Debug.Log("+JSON Р±С‹Р» СЃРѕС…СЂР°РЅС‘РЅ: " + path);
 
-        // Начинаем затемнение
-        SpriteRenderer sr = fadeCanvas.GetComponent<SpriteRenderer>();
         float elapsed = 0f;
+    
+        // РЎРЅР°С‡Р°Р»Р° РґРµР»Р°РµРј fadeImage РїРѕР»РЅРѕСЃС‚СЊСЋ РІРёРґРёРјС‹Рј (С‡РµСЂРЅС‹Р№ СЌРєСЂР°РЅ)
+        fadeImage.color = new Color(0, 0, 0, 0);
+        fadeImage.gameObject.SetActive(true);
 
         while (elapsed < fadeDuration)
         {
             float alpha = elapsed / fadeDuration;
-            sr.color = new Color(0, 0, 0, alpha);
+            // Р—Р°С‚РµРјРЅСЏРµРј СЌРєСЂР°РЅ
+            fadeImage.color = new Color(0, 0, 0, alpha);
+            // Р РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ РґРµР»Р°РµРј UI РјРµРЅРµРµ РІРёРґРёРјС‹Рј
+            canvasGroup.alpha = 1 - alpha;
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        sr.color = new Color(0, 0, 0, 1f); // Полностью чёрный
+        // Р’ РєРѕРЅС†Рµ РґРµР»Р°РµРј СЌРєСЂР°РЅ РїРѕР»РЅРѕСЃС‚СЊСЋ С‡РµСЂРЅС‹Рј Рё UI РїРѕР»РЅРѕСЃС‚СЊСЋ РЅРµРІРёРґРёРјС‹Рј
+        fadeImage.color = new Color(0, 0, 0, 1f);
+        canvasGroup.alpha = 0f;
 
-        // Загружаем сцену
         SceneManager.LoadScene(sceneIndex);
     }
 }
