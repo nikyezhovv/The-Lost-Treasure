@@ -131,7 +131,7 @@ public class BaseEnemy : Sounds, IDamageable
     {
         if (Mathf.Abs(Player.position.y - transform.position.y) > 4.5f) 
         {
-            Rb.velocity = Vector2.zero;
+            Rb.linearVelocity = Vector2.zero;
             return;
         } 
         

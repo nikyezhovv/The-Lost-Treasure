@@ -19,6 +19,8 @@ public class FinalChestOpener : MonoBehaviour
     public float textScrollSpeed = 100f;
 
     public int sceneToLoad = 0;
+    public string EndText;
+    public string ChestText = "нажми Enter чтобы открыть";
 
     private bool isPlayerNear = false;
     private bool isChestOpened = false;
@@ -58,23 +60,23 @@ public class FinalChestOpener : MonoBehaviour
 
         victoryText.gameObject.SetActive(true);
         victoryText.color = Color.yellow;
-        victoryText.text = "������\n������\n������\n\n�� ����� �� �����!\n\n��� ����� ��������:\n�������\n�����\n������\n�������";
+        victoryText.text = EndText;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(victoryText.rectTransform);
-        Vector3 currentPosition = victoryText.rectTransform.localPosition;
+        var currentPosition = victoryText.rectTransform.localPosition;
 
-        float initialScreenHeight = Screen.height;
-        float textHeight = victoryText.preferredHeight;
-        float startY = -initialScreenHeight / 2f - textHeight;
+        var initialScreenHeight = Screen.height;
+        var textHeight = victoryText.preferredHeight;
+        var startY = -initialScreenHeight / 2f - textHeight;
         victoryText.rectTransform.localPosition = new Vector3(currentPosition.x, startY, currentPosition.z);
 
         while (true)
         {
-            float currentScreenHeight = Screen.height;
+            var currentScreenHeight = Screen.height;
             LayoutRebuilder.ForceRebuildLayoutImmediate(victoryText.rectTransform);
-            float currentTextHeight = victoryText.preferredHeight;
+            var currentTextHeight = victoryText.preferredHeight;
 
-            float endY = currentScreenHeight + currentTextHeight;
+            var endY = currentScreenHeight + currentTextHeight;
             victoryText.rectTransform.localPosition += new Vector3(0f, textScrollSpeed * Time.deltaTime, 0f);
 
             if (victoryText.rectTransform.localPosition.y >= endY)
@@ -94,7 +96,7 @@ public class FinalChestOpener : MonoBehaviour
         {
             isPlayerNear = true;
             promptText.SetActive(true);
-            promptText.GetComponent<TextMeshProUGUI>().text = "������� Enter ����� ������� ������";
+            promptText.GetComponent<TextMeshProUGUI>().text = ChestText;
         }
     }
 
@@ -111,12 +113,12 @@ public class FinalChestOpener : MonoBehaviour
 
     IEnumerator FadeOut()
     {
-        float elapsed = 0f;
-        SpriteRenderer sr = fadeCanvas.GetComponent<SpriteRenderer>();
+        var elapsed = 0f;
+        var sr = fadeCanvas.GetComponent<SpriteRenderer>();
 
         while (elapsed < fadeDuration)
         {
-            float alpha = elapsed / fadeDuration;
+            var alpha = elapsed / fadeDuration;
             sr.color = new Color(0, 0, 0, alpha);
             elapsed += Time.deltaTime;
             yield return null;

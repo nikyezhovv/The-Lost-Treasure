@@ -96,7 +96,7 @@ public class PlayerHealth : Sounds
         var rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.simulated = false; // Отключает физику без отключения объекта
         }
         

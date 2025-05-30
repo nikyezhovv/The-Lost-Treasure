@@ -42,10 +42,10 @@ public class PortalTeleporter : MonoBehaviour
 
         if (fadeRenderer != null)
         {
-            float elapsed = 0f;
+            var elapsed = 0f;
             while (elapsed < fadeDuration)
             {
-                float alpha = elapsed / fadeDuration;
+                var alpha = elapsed / fadeDuration;
                 fadeRenderer.color = new Color(0, 0, 0, alpha);
                 elapsed += Time.deltaTime;
                 yield return null;

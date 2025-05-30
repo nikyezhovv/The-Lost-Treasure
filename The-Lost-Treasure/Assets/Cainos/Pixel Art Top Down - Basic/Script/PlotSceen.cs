@@ -8,6 +8,7 @@ public class PlotSceen : MonoBehaviour
     public string text;
     private float time;
     private int symbol = 0;
+    public float speed = 0.05f;
 
     void Start()
     {
@@ -45,7 +46,7 @@ public class PlotSceen : MonoBehaviour
 
         time += Time.deltaTime;
 
-        if (time > 0.05f)
+        if (time > speed)
         {
             time = 0;
 

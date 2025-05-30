@@ -8,13 +8,16 @@ public class ChestOpener : MonoBehaviour
     public Animator chestAnimator;
     public GameObject promptText;
     public GameObject portal;
-    public GameObject fadeCanvas; // ���������� (SpriteRenderer ������� ����� � ����� = 0)
+    public GameObject fadeCanvas;
+    public string TextToOpen;
+    public string TextToTouch;
 
     [Header("Teleport Settings")]
     public int sceneToLoad = 1;
     public float shakeDuration = 2f;
     public float shakeMagnitude = 0.1f;
     public float fadeDuration = 2f;
+    
 
     private bool isPlayerNear = false;
     private bool isChestOpened = false;
@@ -40,7 +43,7 @@ public class ChestOpener : MonoBehaviour
             else
             {
                 portal.SetActive(true);
-                Animator portalAnimator = portal.GetComponent<Animator>();
+                var portalAnimator = portal.GetComponent<Animator>();
                 if (portalAnimator != null)
                 {
                     portalAnimator.SetBool("on", true);
@@ -55,7 +58,7 @@ public class ChestOpener : MonoBehaviour
     {
         isChestOpened = true;
         chestAnimator.SetBool("Open", true);
-        promptText.GetComponent<TextMeshProUGUI>().text = "������� Enter ����� ����� ���";
+        promptText.GetComponent<TextMeshProUGUI>().text = TextToOpen;
     }
 
     public IEnumerator TeleportSequence()
@@ -74,7 +77,7 @@ public class ChestOpener : MonoBehaviour
         StartCoroutine(FadeOut());
 
         yield return new WaitForSeconds(Mathf.Max(fadeDuration, shakeDuration));
-        SceneManager.LoadScene(sceneToLoad); // ����� �������� �� ������, ���� �����
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -83,7 +86,7 @@ public class ChestOpener : MonoBehaviour
         {
             isPlayerNear = true;
             promptText.SetActive(true);
-            promptText.GetComponent<TextMeshProUGUI>().text = "������� Enter ����� ������� ������";
+            promptText.GetComponent<TextMeshProUGUI>().text = TextToTouch;
         }
     }
 
@@ -100,11 +103,11 @@ public class ChestOpener : MonoBehaviour
 
     IEnumerator ShakeCamera()
     {
-        float elapsed = 0f;
+        var elapsed = 0f;
         while (elapsed < shakeDuration)
         {
-            float x = Random.Range(-1f, 1f) * shakeMagnitude;
-            float y = Random.Range(-1f, 1f) * shakeMagnitude;
+            var x = Random.Range(-1f, 1f) * shakeMagnitude;
+            var y = Random.Range(-1f, 1f) * shakeMagnitude;
 
             if (mainCamera != null)
                 mainCamera.transform.position = originalCameraPosition + new Vector3(x, y, 0f);
@@ -119,12 +122,12 @@ public class ChestOpener : MonoBehaviour
 
     IEnumerator FadeOut()
     {
-        float elapsed = 0f;
-        SpriteRenderer sr = fadeCanvas.GetComponent<SpriteRenderer>();
+        var elapsed = 0f;
+        var sr = fadeCanvas.GetComponent<SpriteRenderer>();
 
         while (elapsed < fadeDuration)
         {
-            float alpha = elapsed / fadeDuration;
+            var alpha = elapsed / fadeDuration;
             sr.color = new Color(0, 0, 0, alpha);
             elapsed += Time.deltaTime;
             yield return null;
