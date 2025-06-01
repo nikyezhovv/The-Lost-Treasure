@@ -46165,8 +46165,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.22882485, y: 0.70834714}
-  m_Size: {x: 0.68136644, y: 1.4725615}
+  m_Offset: {x: -0.22882485, y: 0.7276612}
+  m_Size: {x: 0.68136644, y: 1.4339334}
   m_Direction: 0
 --- !u!114 &1271379573
 MonoBehaviour:
@@ -46259,8 +46259,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.2392255, y: 0.7083471}
-  m_Size: {x: 0.66056466, y: 1.4725609}
+  m_Offset: {x: -0.2392255, y: 0.7276612}
+  m_Size: {x: 0.66056466, y: 1.4339327}
   m_Direction: 0
 --- !u!82 &1271379577
 AudioSource:
@@ -114847,10 +114847,10 @@ SceneRoots:
   - {fileID: 678633626}
   - {fileID: 506940652}
   - {fileID: 287829102}
-  - {fileID: 875596213}
   - {fileID: 168196775}
   - {fileID: 1230981076}
   - {fileID: 1585652466}
   - {fileID: 2111088328}
   - {fileID: 1370984560}
   - {fileID: 1235227945}
+  - {fileID: 875596213}
