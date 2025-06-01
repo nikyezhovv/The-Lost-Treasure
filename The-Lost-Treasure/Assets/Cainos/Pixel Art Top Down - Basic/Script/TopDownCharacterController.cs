@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Cainos.PixelArtTopDown_Basic
 {
-    public class TopDownCharacterController : Sounds
+    public class TopDownCharacterController : SoundEmitter
     {
         public float speed;
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BaseEnemy : Sounds, IDamageable
+public class BaseEnemy : SoundEmitter, IDamageable
 {
     [Header("Movement Settings")] [SerializeField]
     public float moveSpeed = 5f;

@@ -4,11 +4,14 @@ using UnityEngine;
 public class PlotSceen : MonoBehaviour
 {
     public TextMeshProUGUI textObject;
-    public bool isEnter = false;
     public string text;
+    public float speed = 0.01f;
+
     private float time;
     private int symbol = 0;
-    public float speed = 0.05f;
+    private int playerColliderCount = 0;
+
+    private bool IsPlayerInside => playerColliderCount > 0;
 
     void Start()
     {
@@ -22,14 +25,16 @@ public class PlotSceen : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        Debug.Log("we enter");
-        isEnter = true;
-        symbol = 0;
-        time = 0f;
-
-        if (textObject != null)
+        playerColliderCount++;
+        if (playerColliderCount == 1)
         {
-            textObject.text = "";
+            Debug.Log("Player entered");
+            symbol = 0;
+            time = 0f;
+            if (textObject != null)
+            {
+                textObject.text = "";
+            }
         }
     }
 
@@ -37,7 +42,11 @@ public class PlotSceen : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        isEnter = false;
+        playerColliderCount = Mathf.Max(0, playerColliderCount - 1);
+        if (playerColliderCount == 0)
+        {
+            Debug.Log("Player exited");
+        }
     }
 
     void Update()
@@ -48,17 +57,17 @@ public class PlotSceen : MonoBehaviour
 
         if (time > speed)
         {
-            time = 0;
+            time = 0f;
 
-            if (isEnter && symbol < text.Length)
+            if (IsPlayerInside && symbol < text.Length)
             {
                 textObject.text += text[symbol];
-                symbol += 1;
+                symbol++;
             }
-            else if (!isEnter && symbol >= 0)
+            else if (!IsPlayerInside && symbol > 0)
             {
-                symbol -= 1;
-                textObject.text = text.Substring(0, Mathf.Max(symbol, 0));
+                symbol--;
+                textObject.text = text.Substring(0, symbol);
             }
         }
     }

@@ -2,7 +2,7 @@ using UnityEngine;
 using Pathfinding;
 using Unity.VisualScripting;
 
-public class BaseFlyingEnemy : Sounds, IDamageable
+public class BaseFlyingEnemy : SoundEmitter, IDamageable
 {
     [Header("Detection & Attack")] [SerializeField]
     private float activationRange = 8f;

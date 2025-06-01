@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class PlayerControls : Sounds
+public class PlayerControls : SoundEmitter
 {
     [Header("Gun Swap")]
     [SerializeField] private bool canSwapGun;
@@ -186,8 +186,7 @@ public class PlayerControls : Sounds
             _jumpCount++;
         }
     }
-
-    [System.Obsolete]
+    
     private void UpdateFallingStatus()  
     {
         if (!isGrounded && _rigidbody.linearVelocity.y < 0)

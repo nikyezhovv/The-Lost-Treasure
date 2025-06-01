@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerCombats : Sounds
+public class PlayerCombats : SoundEmitter
 {
     [Header("Combat Settings")]
     [SerializeField] private float swordAttackRange = 2f;

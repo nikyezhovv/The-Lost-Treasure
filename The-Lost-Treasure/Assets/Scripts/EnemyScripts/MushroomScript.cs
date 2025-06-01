@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MushroomScript : Sounds, IDamageable
+public class MushroomScript : SoundEmitter, IDamageable
 {
    [Header("Attack Settings")]
    [SerializeField] public float attackRange = 2;

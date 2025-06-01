@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Sounds : MonoBehaviour
+public class SoundEmitter : MonoBehaviour
 {
     public AudioClip[] sounds;
 

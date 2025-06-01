@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : Sounds
+public class PlayerHealth : SoundEmitter
 {
     [Header("Health Settings")]
     [SerializeField] public float maxHealth = 100f;

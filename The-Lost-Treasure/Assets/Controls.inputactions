@@ -187,6 +187,17 @@
                 },
                 {
                     "name": "",
+                    "id": "c6967165-7e51-48b5-b26b-265d11f15263",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ecf14f6a-bb09-471a-8157-c51d44dda738",
                     "path": "<Keyboard>/s",
                     "interactions": "",
@@ -200,6 +211,17 @@
                     "name": "",
                     "id": "826ab1cd-bb1d-4e70-96eb-82f9618a9bac",
                     "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FireAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f31e893e-c330-4d2f-9cae-ffeec0d0de03",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
