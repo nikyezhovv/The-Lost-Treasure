@@ -12166,7 +12166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textObject: {fileID: 1992896285}
   text: "> \u041E-\u043E \u0423 \u0410 \u043C\u043D\u0435 \u044D\u0442\u043E \u043D\u0440\u0430\u0432\u0438\u0442\u0441\u044F"
-  speed: 0.05
+  speed: 0.0001
 --- !u!61 &479021648
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -25004,7 +25004,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textObject: {fileID: 1992896285}
   text: "> \u0410-\u0430-\u0430 \u041C\u0435\u043D\u044F \u0437\u0430\u0441\u0430\u0441\u044B\u0432\u0430\u0435\u0442"
-  speed: 0.05
+  speed: 0.0001
 --- !u!61 &1127967994
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -35891,7 +35891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textObject: {fileID: 1992896285}
   text: "> \u0418 \u0435\u0449\u0451 \u0440\u0430\u0437"
-  speed: 0.05
+  speed: 0.0001
 --- !u!61 &1815292947
 BoxCollider2D:
   m_ObjectHideFlags: 0

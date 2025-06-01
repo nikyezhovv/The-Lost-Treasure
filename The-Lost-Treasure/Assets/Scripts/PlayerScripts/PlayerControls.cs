@@ -113,7 +113,9 @@ public class PlayerControls : SoundEmitter
         {
             PlayLandingSound();
         }
-    
+        
+        _wasGrounded = isGrounded;
+        
         UpdateMovementSpeed();
         HandlePlatformCollisions();
         UpdateFallingStatus();
@@ -141,6 +143,12 @@ public class PlayerControls : SoundEmitter
     private void UpdateGroundedStatus()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, layerGrounds);
+        
+        if (isGrounded != _wasGrounded)
+        {
+            animator.SetBool("IsGrounded", isGrounded);
+        }
+
 
         if (isGrounded)
         {

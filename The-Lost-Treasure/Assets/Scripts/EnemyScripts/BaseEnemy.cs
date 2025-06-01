@@ -95,20 +95,18 @@ public class BaseEnemy : SoundEmitter, IDamageable
         if (_isHurting) return;
         PlaySound(sounds[0]);
         _currentHealth -= damage;
+        if (_currentHealth <= 0)
+        {
+            Die();
+        }
         Animator.SetTrigger("Hurt");
         _isHurting = true;
 
         Vector2 knockbackDirection = (transform.position - Player.position).normalized;
         Rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-
-        if (_currentHealth <= 0)
-        {
-            Die();
-        }
-        else
-        {
-            Invoke("EndHurtState", 0.4f);
-        }
+        
+        Invoke("EndHurtState", 0.4f);
+        
     }
 
 
