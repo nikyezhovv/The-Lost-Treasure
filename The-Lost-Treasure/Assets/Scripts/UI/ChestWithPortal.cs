@@ -19,26 +19,26 @@ public class ChestOpener : MonoBehaviour
     public float fadeDuration = 2f;
     
 
-    private bool isPlayerNear = false;
-    private bool isChestOpened = false;
-    private bool isChestDisabled = false;
+    private bool _isPlayerNear = false;
+    private bool _isChestOpened = false;
+    private bool _isChestDisabled = false;
 
-    private Camera mainCamera;
-    private Vector3 originalCameraPosition;
+    private Camera _mainCamera;
+    private Vector3 _originalCameraPosition;
 
-    void Start()
+    private void Start()
     {
         promptText.SetActive(false);
-        mainCamera = Camera.main;
+        _mainCamera = Camera.main;
     }
 
-    void Update()
+    private void Update()
     {
-        if (isChestDisabled) return;
+        if (_isChestDisabled) return;
 
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.Return))
+        if (_isPlayerNear && Input.GetKeyDown(KeyCode.Return))
         {
-            if (!isChestOpened)
+            if (!_isChestOpened)
                 OpenChest();
             else
             {
@@ -54,9 +54,9 @@ public class ChestOpener : MonoBehaviour
         }
     }
 
-    void OpenChest()
+    private void OpenChest()
     {
-        isChestOpened = true;
+        _isChestOpened = true;
         chestAnimator.SetBool("Open", true);
         promptText.GetComponent<TextMeshProUGUI>().text = TextToOpen;
     }
@@ -64,14 +64,14 @@ public class ChestOpener : MonoBehaviour
     public IEnumerator TeleportSequence()
     {
         portal.SetActive(true);
-        isChestOpened = false;
-        isChestDisabled = true;
+        _isChestOpened = false;
+        _isChestDisabled = true;
         chestAnimator.SetBool("Open", false);
         chestAnimator.SetBool("get", true);
         promptText.SetActive(false);
 
-        if (mainCamera != null)
-            originalCameraPosition = mainCamera.transform.position;
+        if (_mainCamera != null)
+            _originalCameraPosition = _mainCamera.transform.position;
 
         StartCoroutine(ShakeCamera());
         StartCoroutine(FadeOut());
@@ -80,28 +80,28 @@ public class ChestOpener : MonoBehaviour
         SceneManager.LoadScene(sceneToLoad);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && !isChestDisabled)
+        if (other.CompareTag("Player") && !_isChestDisabled)
         {
-            isPlayerNear = true;
+            _isPlayerNear = true;
             promptText.SetActive(true);
             promptText.GetComponent<TextMeshProUGUI>().text = TextToTouch;
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        isChestOpened = false;
+        _isChestOpened = false;
         if (other.CompareTag("Player"))
         {
             chestAnimator.SetBool("Open", false);
-            isPlayerNear = false;
+            _isPlayerNear = false;
             promptText.SetActive(false);
         }
     }
 
-    IEnumerator ShakeCamera()
+    private IEnumerator ShakeCamera()
     {
         var elapsed = 0f;
         while (elapsed < shakeDuration)
@@ -109,18 +109,18 @@ public class ChestOpener : MonoBehaviour
             var x = Random.Range(-1f, 1f) * shakeMagnitude;
             var y = Random.Range(-1f, 1f) * shakeMagnitude;
 
-            if (mainCamera != null)
-                mainCamera.transform.position = originalCameraPosition + new Vector3(x, y, 0f);
+            if (_mainCamera != null)
+                _mainCamera.transform.position = _originalCameraPosition + new Vector3(x, y, 0f);
 
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        if (mainCamera != null)
-            mainCamera.transform.position = originalCameraPosition;
+        if (_mainCamera != null)
+            _mainCamera.transform.position = _originalCameraPosition;
     }
 
-    IEnumerator FadeOut()
+    private IEnumerator FadeOut()
     {
         var elapsed = 0f;
         var sr = fadeCanvas.GetComponent<SpriteRenderer>();

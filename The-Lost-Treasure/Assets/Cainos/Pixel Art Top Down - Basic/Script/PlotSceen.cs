@@ -13,7 +13,7 @@ public class PlotSceen : MonoBehaviour
 
     private bool IsPlayerInside => playerColliderCount > 0;
 
-    void Start()
+    private void Start()
     {
         if (textObject != null)
         {
@@ -49,26 +49,24 @@ public class PlotSceen : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (textObject == null || string.IsNullOrEmpty(text)) return;
 
         time += Time.deltaTime;
 
-        if (time > speed)
-        {
-            time = 0f;
+        if (!(time > speed)) return;
+        time = 0f;
 
-            if (IsPlayerInside && symbol < text.Length)
-            {
-                textObject.text += text[symbol];
-                symbol++;
-            }
-            else if (!IsPlayerInside && symbol > 0)
-            {
-                symbol--;
-                textObject.text = text.Substring(0, symbol);
-            }
+        if (IsPlayerInside && symbol < text.Length)
+        {
+            textObject.text += text[symbol];
+            symbol++;
+        }
+        else if (!IsPlayerInside && symbol > 0)
+        {
+            symbol--;
+            textObject.text = text.Substring(0, symbol);
         }
     }
 }

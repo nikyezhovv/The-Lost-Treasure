@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class FinalChestOpener : MonoBehaviour
@@ -23,34 +24,34 @@ public class FinalChestOpener : MonoBehaviour
     public float textScrollSpeed = 100f;
 
     public int sceneToLoad = 0;
-    public string EndText;
-    public string ChestText = "нажми Enter чтобы открыть";
+    public string endText;
+    public string chestText = "нажми Enter чтобы открыть";
 
-    private bool isPlayerNear = false;
-    private bool isChestOpened = false;
-    private bool isChestDisabled = false;
+    private bool _isPlayerNear;
+    private bool _isChestOpened;
+    private bool _isChestDisabled;
 
-    void Start()
+    private void Start()
     {
         promptText.SetActive(false);
         victoryText.gameObject.SetActive(false);
         victoryText.text = "";
     }
 
-    void Update()
+    private void Update()
     {
-        if (isChestDisabled) return;
+        if (_isChestDisabled) return;
 
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.Return))
+        if (_isPlayerNear && Input.GetKeyDown(KeyCode.Return))
         {
             TriggerVictoryEvent();
         }
     }
 
-    void TriggerVictoryEvent()
+    private void TriggerVictoryEvent()
     {
         eventBubles.SetActive(true);
-        isChestDisabled = true;
+        _isChestDisabled = true;
         chestAnimator.SetBool("Open", true);
         promptText.SetActive(false);
 
@@ -63,14 +64,14 @@ public class FinalChestOpener : MonoBehaviour
         StartCoroutine(VictorySequence());
     }
 
-    IEnumerator VictorySequence()
+    private IEnumerator VictorySequence()
     {
         yield return StartCoroutine(FadeOut());
         eventBubles.SetActive(false);
 
         victoryText.gameObject.SetActive(true);
         victoryText.color = Color.yellow;
-        victoryText.text = EndText;
+        victoryText.text = endText;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(victoryText.rectTransform);
         var currentPosition = victoryText.rectTransform.localPosition;
@@ -100,28 +101,28 @@ public class FinalChestOpener : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && !isChestDisabled)
+        if (other.CompareTag("Player") && !_isChestDisabled)
         {
-            isPlayerNear = true;
+            _isPlayerNear = true;
             promptText.SetActive(true);
-            promptText.GetComponent<TextMeshProUGUI>().text = ChestText;
+            promptText.GetComponent<TextMeshProUGUI>().text = chestText;
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerNear = false;
-            isChestOpened = false;
+            _isPlayerNear = false;
+            _isChestOpened = false;
             promptText.SetActive(false);
             chestAnimator.SetBool("Open", false);
         }
     }
 
-    IEnumerator FadeOut()
+    private IEnumerator FadeOut()
     {
         var elapsed = 0f;
         var sr = fadeCanvas.GetComponent<SpriteRenderer>();

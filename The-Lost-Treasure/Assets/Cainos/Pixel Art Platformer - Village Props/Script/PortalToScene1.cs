@@ -4,9 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class PortalToScene1 : MonoBehaviour
 {
-    private bool isTriggered = false;
     public int seenNumber = 1;
-    public int nextLevelNumber = 0;
+    public int nextLevelNumber;
+    
+    private bool _isTriggered;
 
     [System.Serializable]
     public class PlayerData
@@ -25,12 +26,12 @@ public class PortalToScene1 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (isTriggered) return;
+        if (_isTriggered) return;
 
         if (other.CompareTag("Player"))
         {
-            isTriggered = true;
-            SaveLevelProgress(nextLevelNumber); // Устанавливаем level = 1
+            _isTriggered = true;
+            SaveLevelProgress(nextLevelNumber);
             SceneManager.LoadScene(seenNumber);
         }
     }
@@ -38,8 +39,7 @@ public class PortalToScene1 : MonoBehaviour
     private void SaveLevelProgress(int newLevel)
     {
         PlayerData data;
-
-        // Если файл существует, читаем и обновляем
+        
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
@@ -47,7 +47,7 @@ public class PortalToScene1 : MonoBehaviour
         }
         else
         {
-            data = new PlayerData(); // создаём с дефолтными значениями
+            data = new PlayerData();
         }
 
         data.level = newLevel;

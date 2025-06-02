@@ -97,15 +97,12 @@ public class PlayerHealth : SoundEmitter
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
-            rb.simulated = false; // Отключает физику без отключения объекта
+            rb.simulated = false;
         }
         
         if (_playerControls != null)
             _playerControls.enabled = false;
-            
-        if (_playerRenderer != null)
-            //_playerRenderer.enabled = false;
-            
+        
         if (_playerCollider != null)
             _playerCollider.enabled = false;
         

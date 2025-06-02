@@ -8,23 +8,23 @@ public class SwordPickup : MonoBehaviour
     [SerializeField] private GameObject[] unlockOnTAke;
 
 
-    private bool isPlayerNear = false;
-    private ChestOpener chestOpener;
+    private bool _isPlayerNear;
+    private ChestOpener _chestOpener;
 
-    void Start()
+    private void Start()
     {
-        chestOpener = FindObjectOfType<ChestOpener>(); // получаем ссылку на сундук
+        _chestOpener = FindObjectOfType<ChestOpener>();
     }
 
-    void Update()
+    private void Update()
     {
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (_isPlayerNear && Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             GiveSwordToPlayer();
         }
     }
 
-    void GiveSwordToPlayer()
+    private void GiveSwordToPlayer()
     {
         foreach (var obj in unlockOnTAke)
         {
@@ -37,41 +37,34 @@ public class SwordPickup : MonoBehaviour
         {
             player.GetComponent<Animator>().runtimeAnimatorController = animatorWithSword;
             SaveWeapon("sword");
-
-            // Найти объект сундука и уведомить его
-            //ChestOpener chest = FindObjectOfType<ChestOpener>();
-            //if (chest != null)
-            //{
-            //    chest.OnSwordPickedUp();
-            //}
         }
 
-        gameObject.SetActive(false); // убрать меч из сцены
+        gameObject.SetActive(false);
     }
 
     private void SaveWeapon(string weaponName)
     {
-        string path = Path.Combine(Application.persistentDataPath, fileName);
+        var path = Path.Combine(Application.persistentDataPath, fileName);
 
         if (File.Exists(path))
         {
-            string json = File.ReadAllText(path);
-            PlayerData data = JsonUtility.FromJson<PlayerData>(json);
+            var json = File.ReadAllText(path);
+            var data = JsonUtility.FromJson<PlayerData>(json);
             data.weapon = weaponName;
             File.WriteAllText(path, JsonUtility.ToJson(data, true));
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
-            isPlayerNear = true;
+            _isPlayerNear = true;
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
-            isPlayerNear = false;
+            _isPlayerNear = false;
     }
 
     [System.Serializable]

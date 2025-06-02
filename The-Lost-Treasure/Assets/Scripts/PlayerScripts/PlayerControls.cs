@@ -1,8 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 public class PlayerControls : SoundEmitter
 {
@@ -148,8 +147,7 @@ public class PlayerControls : SoundEmitter
         {
             animator.SetBool("IsGrounded", isGrounded);
         }
-
-
+        
         if (isGrounded)
         {
             _jumpCount = 0;
@@ -178,21 +176,22 @@ public class PlayerControls : SoundEmitter
             _sprite.rotation = Quaternion.Euler(0, axis > 0 ? 0 : 180, 0);
         }
         else
+        {
             animator.SetInteger("State", 0);
+        }
     }
 
     private void Jump()
     {
-        if (isGrounded || _jumpCount < MaxJumps - 1)
-        {
-            _fallThroughButtonHeld = true;
-            animator.SetBool("isJump", true); //Start jump animation
-            animator.SetBool("isDown", false);
-            PlaySound(sounds[1]);
-            _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, jumpForce);
-            _jumpStartSpeed = GetCurrentSpeed();
-            _jumpCount++;
-        }
+        if (!isGrounded && _jumpCount >= MaxJumps - 1) return;
+        
+        _fallThroughButtonHeld = true;
+        animator.SetBool("isJump", true);
+        animator.SetBool("isDown", false);
+        PlaySound(sounds[1]);
+        _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, jumpForce);
+        _jumpStartSpeed = GetCurrentSpeed();
+        _jumpCount++;
     }
     
     private void UpdateFallingStatus()  
@@ -200,7 +199,10 @@ public class PlayerControls : SoundEmitter
         if (!isGrounded && _rigidbody.linearVelocity.y < 0)
         {
             if (!isEnter)
+            {
                 _fallThroughButtonHeld = false;
+            }
+                
             animator.SetBool("isJump", false);
             animator.SetBool("isDown", true);
         }
@@ -250,23 +252,20 @@ public class PlayerControls : SoundEmitter
 
     private void Dash()
     {
-        if (!isGrounded) return;
+        if (!isGrounded || !_canDash || _isCrouching) return;
+        
+        var currentRotationY = _sprite.rotation.eulerAngles.y;
 
-        if (_canDash && !_isCrouching)
-        {
-            var currentRotationY = _sprite.rotation.eulerAngles.y;
+        var dashDirection = new Vector2((currentRotationY > 90) ? -1 : 1, 0);
+        _rigidbody.linearVelocity = Vector2.zero;
+        _rigidbody.gravityScale = 0f;
+        _rigidbody.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
 
-            var dashDirection = new Vector2((currentRotationY > 90) ? -1 : 1, 0);
-            _rigidbody.linearVelocity = Vector2.zero;
-            _rigidbody.gravityScale = 0f;
-            _rigidbody.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
+        _canDash = false;
+        _isDashing = true;
 
-            _canDash = false;
-            _isDashing = true;
-
-            Invoke(nameof(StopDash), dashDuration);
-            Invoke(nameof(ResetDash), dashCooldown);
-        }
+        Invoke(nameof(StopDash), dashDuration);
+        Invoke(nameof(ResetDash), dashCooldown);
     }
     
     private void StopDash()
@@ -312,26 +311,22 @@ public class PlayerControls : SoundEmitter
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Platform") && !_currentPlatformColliders.Contains(collision))
-        {
-            isEnter = true;
-            _currentPlatformColliders.Add(collision);
-        }
+        if (!collision.CompareTag("Platform") || _currentPlatformColliders.Contains(collision)) return;
+        isEnter = true;
+        _currentPlatformColliders.Add(collision);
     }
-
+    
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Platform"))
-        {
-            isEnter = false;
-            _currentPlatformColliders.Remove(collision);
-            _fallThroughButtonHeld = false;
-        }
+        if (!collision.CompareTag("Platform")) return;
+        isEnter = false;
+        _currentPlatformColliders.Remove(collision);
+        _fallThroughButtonHeld = false;
     }
 
     private void HandlePlatformCollisions()
     {
-        foreach (Collider2D platformCollider in _currentPlatformColliders)
+        foreach (var platformCollider in _currentPlatformColliders)
         {
             if (platformCollider != null && platformCollider.CompareTag("Platform"))
             {

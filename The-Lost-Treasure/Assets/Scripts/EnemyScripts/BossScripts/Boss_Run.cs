@@ -22,7 +22,7 @@ public class BossRun : StateMachineBehaviour
     {
 	    if (_player == null) return;
 
-	    float distanceToPlayer = Vector2.Distance(_player.position, _rigidbody.position);
+	    var distanceToPlayer = Vector2.Distance(_player.position, _rigidbody.position);
 
 	    if (distanceToPlayer <= _boss.aggroRange)
 	    {

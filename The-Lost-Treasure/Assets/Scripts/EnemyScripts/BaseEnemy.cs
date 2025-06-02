@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class BaseEnemy : SoundEmitter, IDamageable
 {
-    [Header("Movement Settings")] [SerializeField]
-    public float moveSpeed = 5f;
-
+    [Header("Movement Settings")] 
+    [SerializeField] public float moveSpeed = 5f;
     [SerializeField] public float chaseRange = 6f;
+    [SerializeField] public float maxVerticalChaseDistance = 4.5f;
+    [SerializeField] public float returnDistanceThreshold = 1f;
     
 
     [Header("Attack Settings")] 
@@ -21,7 +22,6 @@ public class BaseEnemy : SoundEmitter, IDamageable
 
     [Header("Jump Settings")] 
     [SerializeField] public float jumpForce = 7f;
-
     [SerializeField] public Transform groundCheck;
     [SerializeField] public float groundCheckRadius = 0.3f;
     [SerializeField] public LayerMask groundLayer;
@@ -43,7 +43,7 @@ public class BaseEnemy : SoundEmitter, IDamageable
     private bool _isGrounded;
     private PlayerHealth _playerHealth;
 
-    void Start()
+    private void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         Rb = GetComponent<Rigidbody2D>();
@@ -53,7 +53,7 @@ public class BaseEnemy : SoundEmitter, IDamageable
         _playerHealth = Player.GetComponent<PlayerHealth>();
     }
 
-    void Update()
+    private void Update()
     {
         _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
@@ -108,8 +108,7 @@ public class BaseEnemy : SoundEmitter, IDamageable
         Invoke("EndHurtState", 0.4f);
         
     }
-
-
+    
     private void EndHurtState()
     {
         _isHurting = false;
@@ -125,9 +124,9 @@ public class BaseEnemy : SoundEmitter, IDamageable
         Destroy(gameObject, 0.8f);
     }
 
-    void ChasePlayer()
+    private void ChasePlayer()
     {
-        if (Mathf.Abs(Player.position.y - transform.position.y) > 4.5f) 
+        if (Mathf.Abs(Player.position.y - transform.position.y) > maxVerticalChaseDistance) 
         {
             Rb.linearVelocity = Vector2.zero;
             return;
@@ -136,7 +135,6 @@ public class BaseEnemy : SoundEmitter, IDamageable
         Vector2 direction = (Player.position - transform.position).normalized;
         Rb.linearVelocity = new Vector2(direction.x * moveSpeed, Rb.linearVelocity.y);
         
-
         if (direction.x > 0 && !_facingRight || direction.x < 0 && _facingRight)
         {
             Flip();
@@ -145,9 +143,9 @@ public class BaseEnemy : SoundEmitter, IDamageable
         CheckForObstacleAndJump(direction);
     }
 
-    void ReturnToStart()
+    private void ReturnToStart()
     {
-        if (Vector2.Distance(transform.position, _startingPosition) < 1f)
+        if (Vector2.Distance(transform.position, _startingPosition) < returnDistanceThreshold)
         {
             Rb.linearVelocity = Vector2.zero;
             _isReturning = false;
@@ -198,7 +196,7 @@ public class BaseEnemy : SoundEmitter, IDamageable
         }
     }
 
-    void Flip()
+    private void Flip()
     {
         _facingRight = !_facingRight;
         var scale = transform.localScale;
@@ -206,7 +204,7 @@ public class BaseEnemy : SoundEmitter, IDamageable
         transform.localScale = scale;
     }
 
-    void CheckForObstacleAndJump(Vector2 direction)
+    private void CheckForObstacleAndJump(Vector2 direction)
     {
         if (!_isGrounded) return; 
         
@@ -224,7 +222,7 @@ public class BaseEnemy : SoundEmitter, IDamageable
     }
 
     
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, chaseRange);

@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class SkeletonEnemy : BaseEnemy
 {
-    [Header("Stun Settings")] 
-    [SerializeField] public float stunDuration = 2f;
+    [Header("Stun Settings")] [SerializeField]
+    public float stunDuration = 2f;
+
     [SerializeField] public float stunDamage = 5f;
 
     public override void Attack()
@@ -13,22 +14,21 @@ public class SkeletonEnemy : BaseEnemy
 
         Rb.linearVelocity = Vector2.zero;
         LastAttackTime = Time.time;
-        
+
         Animator.SetTrigger(GetRandomAttackTrigger());
     }
 
     public void Stun()
     {
         // Вызвается из анимации
-        if (Vector2.Distance(transform.position, Player.position) <= attackRange)
+        if (Vector2.Distance(transform.position, Player.position) > attackRange) return;
+
+        var playerHealth = Player.GetComponent<PlayerHealth>();
+        var playerMovements = Player.GetComponent<PlayerControls>();
+        if (playerHealth != null)
         {
-            var playerHealth = Player.GetComponent<PlayerHealth>();
-            var playerMovements = Player.GetComponent<PlayerControls>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(stunDamage);
-                playerMovements.Stun(stunDuration);
-            }
+            playerHealth.TakeDamage(stunDamage);
+            playerMovements.Stun(stunDuration);
         }
     }
 
@@ -36,6 +36,7 @@ public class SkeletonEnemy : BaseEnemy
     {
         PlaySound(sounds[3]);
     }
+
     private void PlayShieldAttackSound()
     {
         PlaySound(sounds[4]);

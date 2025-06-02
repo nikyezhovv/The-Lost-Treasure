@@ -11,11 +11,11 @@ public class BossWeapon : SoundEmitter
 
     public void Attack()
     {
-        Vector3 pos = transform.position;
+        var pos = transform.position;
         pos += transform.right * attackOffset.x;
         pos += transform.up * attackOffset.y;
 
-        Collider2D colInfo = Physics2D.OverlapCircle(pos, attackRange, attackMask);
+        var colInfo = Physics2D.OverlapCircle(pos, attackRange, attackMask);
         if (colInfo != null)
         {
             colInfo.GetComponent<PlayerHealth>().TakeDamage(attackDamage);
@@ -29,7 +29,7 @@ public class BossWeapon : SoundEmitter
 
     public void EnragedAttack()
     {
-        Vector3 pos = transform.position;
+        var pos = transform.position;
         pos += transform.right * attackOffset.x;
         pos += transform.up * attackOffset.y;
 
@@ -40,9 +40,9 @@ public class BossWeapon : SoundEmitter
         }
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
-        Vector3 pos = transform.position;
+        var pos = transform.position;
         pos += transform.right * attackOffset.x;
         pos += transform.up * attackOffset.y;
 

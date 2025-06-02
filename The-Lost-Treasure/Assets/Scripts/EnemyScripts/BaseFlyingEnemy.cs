@@ -26,7 +26,7 @@ public class BaseFlyingEnemy : SoundEmitter, IDamageable
     private PlayerHealth _playerHealth;
 
 
-    void Start()
+    private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player").transform;
         _animator = GetComponent<Animator>();
@@ -60,7 +60,7 @@ public class BaseFlyingEnemy : SoundEmitter, IDamageable
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (_player == null || _isHurting) return;
 
@@ -96,7 +96,7 @@ public class BaseFlyingEnemy : SoundEmitter, IDamageable
         PlaySound(sounds[0]);
         _animator.SetTrigger("Hurt");
         _isHurting = true;
-        
+
         if (currentHealth <= 0)
         {
             Die();
@@ -124,20 +124,19 @@ public class BaseFlyingEnemy : SoundEmitter, IDamageable
         Destroy(gameObject, 0.8f);
     }
 
-    void Attack()
+    private void Attack()
     {
-        if (Time.time - _lastAttackTime >= attackCooldown)
-        {
-            _lastAttackTime = Time.time;
-            _animator.SetTrigger("Attack");
+        if (Time.time - _lastAttackTime < attackCooldown) return;
 
-            if (Vector2.Distance(transform.position, _player.position) <= attackRange)
+        _lastAttackTime = Time.time;
+        _animator.SetTrigger("Attack");
+
+        if (Vector2.Distance(transform.position, _player.position) <= attackRange)
+        {
+            var playerHealth = _player.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
             {
-                var playerHealth = _player.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
-                {
-                    playerHealth.TakeDamage(attackDamage);
-                }
+                playerHealth.TakeDamage(attackDamage);
             }
         }
     }
@@ -146,8 +145,8 @@ public class BaseFlyingEnemy : SoundEmitter, IDamageable
     {
         PlaySound(sounds[2]);
     }
-    
-    void Flip()
+
+    private void Flip()
     {
         if (_player == null) return;
 
@@ -169,7 +168,7 @@ public class BaseFlyingEnemy : SoundEmitter, IDamageable
         }
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, activationRange);

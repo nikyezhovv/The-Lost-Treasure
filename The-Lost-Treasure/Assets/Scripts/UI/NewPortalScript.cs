@@ -13,21 +13,21 @@ public class PortalTeleporter : MonoBehaviour
     public GameObject fadeCanvas;            
     public GameObject promptTextObject;      
 
-    private bool isPlayerNear = false;
-    private SpriteRenderer fadeRenderer;
+    private bool _isPlayerNear;
+    private SpriteRenderer _fadeRenderer;
 
-    void Start()
+    private void Start()
     {
         if (promptTextObject != null)
             promptTextObject.SetActive(false);
 
         if (fadeCanvas != null)
-            fadeRenderer = fadeCanvas.GetComponent<SpriteRenderer>();
+            _fadeRenderer = fadeCanvas.GetComponent<SpriteRenderer>();
     }
 
-    void Update()
+    private void Update()
     {
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.Return))
+        if (_isPlayerNear && Input.GetKeyDown(KeyCode.Return))
         {
             StartCoroutine(FadeAndTeleport());
         }
@@ -35,18 +35,18 @@ public class PortalTeleporter : MonoBehaviour
 
     private IEnumerator FadeAndTeleport()
     {
-        isPlayerNear = false;
+        _isPlayerNear = false;
 
         if (promptTextObject != null)
             promptTextObject.SetActive(false);
 
-        if (fadeRenderer != null)
+        if (_fadeRenderer != null)
         {
             var elapsed = 0f;
             while (elapsed < fadeDuration)
             {
                 var alpha = elapsed / fadeDuration;
-                fadeRenderer.color = new Color(0, 0, 0, alpha);
+                _fadeRenderer.color = new Color(0, 0, 0, alpha);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
@@ -59,7 +59,7 @@ public class PortalTeleporter : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerNear = true;
+            _isPlayerNear = true;
             if (promptTextObject != null)
             {
                 promptTextObject.SetActive(true);
@@ -72,7 +72,7 @@ public class PortalTeleporter : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerNear = false;
+            _isPlayerNear = false;
             if (promptTextObject != null)
                 promptTextObject.SetActive(false);
         }

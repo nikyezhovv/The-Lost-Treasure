@@ -32,31 +32,27 @@ public class MenuScript : MonoBehaviour
 
     private IEnumerator LoadSceneWithFade(int sceneIndex)
     {
-        string path = Path.Combine(Application.persistentDataPath, fileName);
+        var path = Path.Combine(Application.persistentDataPath, fileName);
 
-        PlayerData data = new PlayerData();
-        string json = JsonUtility.ToJson(data, true);
+        var data = new PlayerData();
+        var json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
         Debug.Log("+JSON был сохранён: " + path);
 
-        float elapsed = 0f;
-    
-        // Сначала делаем fadeImage полностью видимым (черный экран)
+        var elapsed = 0f;
+        
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.gameObject.SetActive(true);
 
         while (elapsed < fadeDuration)
         {
-            float alpha = elapsed / fadeDuration;
-            // Затемняем экран
+            var alpha = elapsed / fadeDuration;
             fadeImage.color = new Color(0, 0, 0, alpha);
-            // И одновременно делаем UI менее видимым
             canvasGroup.alpha = 1 - alpha;
             elapsed += Time.deltaTime;
             yield return null;
         }
-
-        // В конце делаем экран полностью черным и UI полностью невидимым
+        
         fadeImage.color = new Color(0, 0, 0, 1f);
         canvasGroup.alpha = 0f;
 

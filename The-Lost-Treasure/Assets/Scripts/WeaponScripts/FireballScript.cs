@@ -7,7 +7,7 @@ public class FireballScript : MonoBehaviour
     public Rigidbody2D rigidBody;
     public int damage = 20;
     public float lifeTime = 2f;
-    void Start()
+    private void Start()
     {
         var player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
